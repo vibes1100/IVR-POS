@@ -9,13 +9,21 @@ import speech_recognition as sr
 import pyttsx3
 from gtts import gTTS
 import psycopg2
+import eel
 
+eel.init('web')
 x = 5
-stop_words = ['i','want','to','order','and','some','would','like','go','visit']
+stop_words = ['i','want','to','order','and','some']
 
 engine = pyttsx3.init('sapi5') 
 voices = engine.getProperty('voices') 
 engine.setProperty('voice', voices[0].id) 
+
+@eel.expose
+def eel_printer():
+    conn = psycopg2.connect(database="postgres", user="postgres", password="hi", host="127.0.0.1", port="5432")
+    cur = conn.cursor()
+    return parent_category_selector(cur)
 
 def speak(audio):
     
@@ -47,32 +55,33 @@ def myCommand(param):
 def printer(current_pointer,p_type,quantity=0):
     
     rows = current_pointer.fetchall()
+    print(type(rows))
+    return rows
+    # if p_type == 1:
+    #     print('Cat  |\t\n id  |\t','Category name',"\t|")
+    # elif p_type ==2:
+    #     print('Cat  |\tSub Category\t|\n id  |\t','    name'," \t|")
+    # elif p_type ==3:
+    #     print('Cat  |\t\n id  |\t','Item name',"\t|")
+    # else:
+    #     print("Invalid")
     
-    if p_type == 1:
-        print('Cat  |\t\n id  |\t','Category name',"\t|")
-    elif p_type ==2:
-        print('Cat  |\tSub Category\t|\n id  |\t','    name'," \t|")
-    elif p_type ==3:
-        print('Cat  |\t\n id  |\t','Item name',"\t|")
-    else:
-        print("Invalid")
+    # print("--------------------------")
     
-    print("--------------------------")
-    
-    if p_type == 1 or p_type == 2:
-        for row in rows:
-            print(row[0],'  |\t',row[1],"    \t|")
-    elif p_type == 3:
-        for row in rows:
-            print(row[0],'  |',row[2],"\t|")
-            return row[0],row[2],row[3],quantity,row[3]*quantity
-    else : 
-        print("error")
+    # if p_type == 1 or p_type == 2:
+    #     for row in rows:
+    #         print(row[0],'  |\t',row[1],"    \t|")
+    # elif p_type == 3:
+    #     for row in rows:
+    #         print(row[0],'  |',row[2],"\t|")
+    #         return row[0],row[2],row[3],quantity,row[3]*quantity
+    # else : 
+    #     print("error")
 
 def parent_category_selector(cur_pointer):
     
     cur_pointer.execute("SELECT category_id AS id,category_name AS name FROM category_table WHERE category_id=parent_id")
-    printer(cur_pointer,1)
+    return printer(cur_pointer,1)
 
 def child_category_selector(cur_pointer,p_id):
     
@@ -115,46 +124,27 @@ def combiner(curr_pointer,inpp,inpp2,inpp3,quantity):
     child_category_selector(curr_pointer,inpp)
     item_selector(curr_pointer,inpp2)
     return db_searcher(stopword_remover(inpp3),cur,quantity)
-
     
 try:
     conn = psycopg2.connect(database="postgres", user="postgres", password="hi", host="127.0.0.1", port="5432")
-    speak("Hi welcome to the system")
     
     
     #speak("Welcome to the system")
     user_buy = []
     n=4
     cur = conn.cursor()
-    speak("Do u know exactly what u want to buy ?")
+    eel.start('index.html', size=(1000, 600))   
     
-    #if inp0 == 'yes'
-    
-    parent_category_selector(cur)
-    speak("Please Select a category from these")
-    
-    inp1 = myCommand("Which category")
-    stopword_remover(inp1)
-    
-    child_category_selector(cur,inp1.capitalize())
-    speak("Please Select a sub category from these")
-    
-    inp2 = myCommand("Which sub_category")
-    stopword_remover(inp2)
-    item_selector(cur,inp2.capitalize())
-    
-    """
-    for i in range(n):
+    """for i in range(n):
         inp1 = input("Category") 
         inp2 = input("Sub_cat")
         inp3 = input("item")
         inp4 = int(input())
         
         user_buy.append(combiner(cur,inp1,inp2,inp3,inp4))
-        print(user_buy)
-    """
-    """
-    parent_category_selector(cur)
+        print(user_buy)"""
+    
+    """parent_category_selector(cur)
     #speak("Which category would u like to choose ?")
     
     inp = "Bakery"
@@ -168,8 +158,7 @@ try:
     print("\n")
     inp = "I want britania milk bread"
     quant = 6
-    user_buy.append(db_searcher(stopword_remover(inp),cur,quant))
-    """
+    user_buy.append(db_searcher(stopword_remover(inp),cur,quant))"""
     
     
     
