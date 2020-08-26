@@ -7,9 +7,10 @@ eel.init('web')
 
 
 @eel.expose
-def dummy(dummy_param):
+def printer(dummy_param):
     print("I got a parameter: ", dummy_param)
-    return "string_value", 1, 1.2, True, [1, 2, 3, 4], {"name": "eel"}
+    return "It works!"
+    # return "string_value", 1, 1.2, True, [1, 2, 3, 4], {"name": "eel"}
 
 
 @eel.expose

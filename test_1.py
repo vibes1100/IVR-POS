@@ -1,4 +1,4 @@
-# -- coding: utf-8 --
+# -*- coding: utf-8 -*-
 """
 Created on Fri Jul 17 12:12:51 2020
 
@@ -9,13 +9,21 @@ import speech_recognition as sr
 import pyttsx3
 from gtts import gTTS
 import psycopg2
+import eel
 
+eel.init('web')
 x = 5
 stop_words = ['i','want','to','order','and','some']
 
 engine = pyttsx3.init('sapi5') 
 voices = engine.getProperty('voices') 
 engine.setProperty('voice', voices[0].id) 
+
+@eel.expose
+def eel_printer():
+    conn = psycopg2.connect(database="postgres", user="postgres", password="hi", host="127.0.0.1", port="5432")
+    cur = conn.cursor()
+    return parent_category_selector(cur)
 
 def speak(audio):
     
@@ -44,34 +52,36 @@ def myCommand(param):
     
     return command
 
-def printer(current_pointer,p_type):
+def printer(current_pointer,p_type,quantity=0):
     
     rows = current_pointer.fetchall()
+    print(type(rows))
+    return rows
+    # if p_type == 1:
+    #     print('Cat  |\t\n id  |\t','Category name',"\t|")
+    # elif p_type ==2:
+    #     print('Cat  |\tSub Category\t|\n id  |\t','    name'," \t|")
+    # elif p_type ==3:
+    #     print('Cat  |\t\n id  |\t','Item name',"\t|")
+    # else:
+    #     print("Invalid")
     
-    if p_type == 1:
-        print('Cat  |\t\n id  |\t','Category name',"\t|")
-    elif p_type ==2:
-        print('Cat  |\tSub Category\t|\n id  |\t','    name'," \t|")
-    elif p_type ==3:
-        print('Cat  |\t\n id  |\t','Item name',"\t|")
-    else:
-        print("Invalid")
+    # print("--------------------------")
     
-    print("--------------------------")
-    
-    if p_type == 1 or p_type == 2:
-        for row in rows:
-            print(row[0],'  |\t',row[1],"    \t|")
-    elif p_type == 3:
-        for row in rows:
-            print(row[0],'  |',row[2],"\t|")
-    else : 
-        print("error")
+    # if p_type == 1 or p_type == 2:
+    #     for row in rows:
+    #         print(row[0],'  |\t',row[1],"    \t|")
+    # elif p_type == 3:
+    #     for row in rows:
+    #         print(row[0],'  |',row[2],"\t|")
+    #         return row[0],row[2],row[3],quantity,row[3]*quantity
+    # else : 
+    #     print("error")
 
 def parent_category_selector(cur_pointer):
     
     cur_pointer.execute("SELECT category_id AS id,category_name AS name FROM category_table WHERE category_id=parent_id")
-    printer(cur_pointer,1)
+    return printer(cur_pointer,1)
 
 def child_category_selector(cur_pointer,p_id):
     
@@ -92,24 +102,49 @@ def stopword_remover(text):
             req.append(word)
     return req
 
-def db_searcher(att,cur_pointer):
-    #attr = ",".join(att)
+def db_searcher(att,cur_pointer,quantt):
+
     x = ''
+    
     for i in range(len(att)):
-        x += "and '%"+att[i]+"%'"
-    print(x)
-    query = "SELECT * FROM items WHERE item_attributes LIKE '%" + att[0] + "%'"
-    print(query)
+        if i==0:
+            x+= "'%" + att[i] + "%'"
+            
+        else:
+            x += " and item_attributes LIKE '%" + att[i] + "%'"
+    
+    query = "SELECT * FROM items WHERE item_attributes LIKE " + x
     cur_pointer.execute(query)
-    printer(cur_pointer,3)
+    
+    r = printer(cur_pointer,3,quantt)
+    return r
+
+def combiner(curr_pointer,inpp,inpp2,inpp3,quantity):
+    parent_category_selector(curr_pointer)
+    child_category_selector(curr_pointer,inpp)
+    item_selector(curr_pointer,inpp2)
+    return db_searcher(stopword_remover(inpp3),cur,quantity)
     
 try:
     conn = psycopg2.connect(database="postgres", user="postgres", password="hi", host="127.0.0.1", port="5432")
+    
+    
     #speak("Welcome to the system")
-    
+    user_buy = []
+    n=4
     cur = conn.cursor()
+    eel.start('index.html', size=(1000, 600))   
     
-    parent_category_selector(cur)
+    """for i in range(n):
+        inp1 = input("Category") 
+        inp2 = input("Sub_cat")
+        inp3 = input("item")
+        inp4 = int(input())
+        
+        user_buy.append(combiner(cur,inp1,inp2,inp3,inp4))
+        print(user_buy)"""
+    
+    """parent_category_selector(cur)
     #speak("Which category would u like to choose ?")
     
     inp = "Bakery"
@@ -120,17 +155,23 @@ try:
     print("\n{}\n\n".format(inp))
     item_selector(cur,inp)
     
-    inp = "I want britania white bread"
-    db_searcher(stopword_remover(inp),cur)
+    print("\n")
+    inp = "I want britania milk bread"
+    quant = 6
+    user_buy.append(db_searcher(stopword_remover(inp),cur,quant))"""
     
     
+    
+    print(user_buy)
+    
+            
     
 except psycopg2.Error as e:
     print("I am unable to connect to the database")
     print (e)
     print (e.pgcode)
     print (e.pgerror)
-    print (traceback.format_exc())
+    #print (traceback.format_exc())
     
 
 """
@@ -188,4 +229,4 @@ for word in lq:
 
     text_stock_less = "Sorry u ordered " +str(req_list[word]) +" of " + word + " but we only have " + str(stock[word]) 
     speak(text_stock_less)
-"""
+"""    
