@@ -6,21 +6,20 @@
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>QR Code Generator</title>
+    <title>QR Code Generator</title>  
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
-    <script type="text/javascript" src="/eel.js"></script>
-    <script type="text/javascript" src="main.js"></script>
+    <link href="style2.css" rel="stylesheet">
     
 </head>
 
-<body onload="initial()">
+<body>
     <section class="wellcome_area clearfix" id="home">
         <div class="container h-100">
             <div class="row h-100 align-items-center">
                 <div class="col-12 col-md">
                     <div class="wellcome-heading">
-                        <h2>IVR_POS</h2>
-                        <h3>QR</h3>
+                        <h2>IVR-POS</h2>
                         <p>Turn any piece of text into a QR code.</p>
                     </div>
                     <div class="get-start-area">
@@ -33,28 +32,56 @@
             </div>
         </div>
     </section>
+    
     <section class="wellcome_area clearfix" id="displaycart">
         <div class="container h-100">
             <div class="row h-100 align-items-center">
                 <div class="col-12 col-md">
                     <div class="wellcome-heading">
                         <h2>Your Shopping Cart</h2>
-                        <h3>QR</h3>
-                        <p>Turn any piece of text into a QR code.</p>
+                        <p>Shop to your Heart's Content!</p>
                     </div>
-                    <div class="get-start-area">
-                        <form class="form-inline">
-                            <a href=display.html><input type="button" id="data" class="form-control email" value="Generate Bill"></a>
-                            <a href=display.html><input type="button" class="submit" value="Get QR Code"></a>
-                        </form>
+                    <div class="get-start-area" id="test1">
                     </div>
                 </div>
             </div>
         </div>
-        <div class="welcome-thumb">
-            <img id="qr" src="" width="60%">
-            <span id = "test"></span>
+        <div id="test">           
         </div>
     </section>
+
+    <nav class="menu">
+		<input type="radio" name="menu" id="one" checked>
+		<input type="radio" name="menu" id="two">
+		<input type="radio" name="menu" id="three">
+		<input type="radio" name="menu" id="four">
+        <input type="radio" name="menu" id="five">
+		<div class="list">
+			<div class="link-wrap">
+				<label for="one" onclick="generateHome()">
+					<i class="material-icons purpleicon">home</i>
+					<span>Home</span>
+				</label>
+				<label for="two">
+					<i class="material-icons purpleicon">chat</i>
+					<span>Chat</span>
+				</label>
+				<label for="three">
+					<i class="material-icons purpleicon largeicon">mic</i>
+					<span>Assistant</span>
+                </label>
+				<label for="four">
+					<i class="material-icons purpleicon">menu</i>
+					<span>Menu</span>
+                </label>              
+                <label for="five" onclick="generateTable()">
+					<i class="material-icons purpleicon">shopping_basket</i>
+					<span>Basket</span>
+				</label>
+			</div>
+		</div>
+    </nav>
 </body>
+<script type="text/javascript" src="/eel.js"></script>
+<script type="text/javascript" src="main.js"></script>
 </html>

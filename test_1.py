@@ -133,7 +133,7 @@ try:
     user_buy = []
     n=4
     cur = conn.cursor()
-    eel.start('index.html', size=(1000, 600))   
+    eel.start('index.html', size=(540, 960))   
     
     """for i in range(n):
         inp1 = input("Category") 
