@@ -12,7 +12,8 @@ input[name="menu"]{display:none}
 .menu {
   position: fixed;
   bottom: 0;
-  width: 540px;
+  width: 100%;
+  z-index: 10;
 }
 .list{
 	width: 100%;
@@ -56,6 +57,7 @@ input[name="menu"]{display:none}
 	-webkit-transform: translateY(45px);
 	        transform: translateY(45px);
 }
+
 #one:checked ~ .list label[for="one"]>span,
 #two:checked ~ .list label[for="two"]>span,
 #three:checked ~ .list label[for="three"]>span,
@@ -80,3 +82,31 @@ input[name="menu"]{display:none}
 .purpleicon:hover{
   color: blueviolet;
 }
+
+.voicebutton {
+    border-radius: 50px;
+    background: purple;
+    z-index: 1;
+    position: relative;
+    height: 80px;
+    text-align: center;
+    line-height: 80px;
+    vertical-align: middle;
+  }
+  
+  .voicebutton i{
+      position: relative;
+      top: 10px;
+      font-size: 30px;
+      color: #fff;
+  }
+  .voicebutton.small {
+    width: 80px;
+    left: calc(50% - 40px);
+    margin-bottom: -30px;
+  }
+
+  .voicebutton:hover {
+    cursor: pointer;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+  }

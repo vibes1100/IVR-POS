@@ -1,0 +1,47 @@
+.googleassist{
+  border-radius:5px;
+  margin:5% auto;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:120px;
+  width:175px;
+}
+
+.voicedot{
+  border-radius:50%;
+  display:block;
+  height:10px;
+  width:10px;
+  margin:5px;
+  background-color: #777;
+}
+
+#bluedot.active{
+  background-color:blue;
+  animation: bounce 1.2s .200s ease-in-out infinite;
+}
+
+#reddot.active{
+  background-color:red;
+  animation: bounce 1.2s .400s ease-in-out infinite;
+}
+
+#yellowdot.active{
+  background-color:gold;
+  animation: bounce 1.2s .600s ease-in-out infinite;
+}
+
+#greendot.active{
+  background-color:green;
+  animation: bounce 1.2s .800s ease-in-out infinite;
+}
+
+@keyframes bounce{
+  0%,75%,100%{
+    transform:translatey(0px);
+}
+  25%{
+    transform:translatey(-7px);
+}
+}

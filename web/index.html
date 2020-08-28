@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
     <link href="style2.css" rel="stylesheet">
+    <link href="style3.css" rel="stylesheet">
     
 </head>
 
@@ -49,8 +50,38 @@
         <div id="test">           
         </div>
     </section>
-
-    <nav class="menu">
+    <section class="wellcome_area clearfix" id="assistant">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+            </div>
+        </div>
+        <div class="googleassist">
+            <span id="bluedot" class="voicedot"></span>
+            <span id="reddot" class="voicedot"></span>
+            <span id="yellowdot" class="voicedot"></span>
+            <span id="greendot" class="voicedot"></span>
+        </div>
+        <!-- <main class="small">
+            <nav class="sticky">
+              <header class="cutout-bar">
+                radial gradient:<br> A+ works as i'd like, for circles
+                <div class="icon">hi</div>
+              </header>
+              <div class="button small">+</div>
+            </nav>
+            <section>
+              <div class="card"></div>
+              <div class="card"></div>
+              <div class="card"></div>
+              <div class="card"></div>
+              <div class="card"></div>
+            </section>
+          </main> -->
+    </section>
+    
+    <nav class="menu navbar-nav">
+        <label for="three" onclick="generateAssistant()">
+        <div class="voicebutton small"><i class="material-icons">mic</i></div></label>
 		<input type="radio" name="menu" id="one" checked>
 		<input type="radio" name="menu" id="two">
 		<input type="radio" name="menu" id="three">
@@ -62,13 +93,14 @@
 					<i class="material-icons purpleicon">home</i>
 					<span>Home</span>
 				</label>
-				<label for="two">
+				<label for="two" onclick="sectiontest()">
 					<i class="material-icons purpleicon">chat</i>
 					<span>Chat</span>
 				</label>
-				<label for="three">
-					<i class="material-icons purpleicon largeicon">mic</i>
-					<span>Assistant</span>
+				<label for="six">
+                    
+					<!-- <i class="material-icons purpleicon">mic</i>
+					<span>Assistant</span> -->
                 </label>
 				<label for="four">
 					<i class="material-icons purpleicon">menu</i>

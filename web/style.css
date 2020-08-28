@@ -8,7 +8,7 @@
 
 body {
     font-family: 'Cabin', sans-serif;
-    background-color: #fff;
+    background-color: #e6e6e6;
 }
 
 h1,
@@ -31,6 +31,10 @@ p {
 }
 
 #displaycart{
+    display: none;
+}
+
+#assistant{
     display: none;
 }
 .heading-text > p {
