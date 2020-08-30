@@ -1,7 +1,10 @@
 Requirements
 
 eel
+nltk
+pyaudio
 pyttsx3
-speech_recognition
 psycopg2
 PostgreSQL 12
+speech_recognition
+
