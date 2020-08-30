@@ -11,10 +11,14 @@ from nltk import word_tokenize
 import psycopg2
 import eel
 
-@eel.expose
-def eel_printer():
+def dbConnect():
     conn = psycopg2.connect(database="postgres", user="postgres", password="hi", host="127.0.0.1", port="5432")
     cur = conn.cursor()
+    return cur
+
+@eel.expose
+def eel_printer():
+    cur = dbConnect()
     return parent_category_selector(cur)
 
 def speak(audio):
@@ -32,8 +36,8 @@ def myCommand(param="Item name"):
     
     with sr.Microphone() as source:
         print(param)
-        r.pause_threshold = 1
-        r.adjust_for_ambient_noise(source, duration=1)
+        r.pause_threshold = 0.5
+        r.adjust_for_ambient_noise(source, duration=0.5)
         audio = r.listen(source)
     
     try:

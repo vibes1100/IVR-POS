@@ -25,7 +25,28 @@ eel.init('web')
 # voices = engine.getProperty('voices') 
 # engine.setProperty('voice', voices[1].id) 
     
+#########ONLY FOR TESTING!######
+##########SAME AS THE TRY BLOCK AFTER THIS######################
+@eel.expose
+def tryblock():
+    cur = dbConnect()
+    eel.left_printer("Do you want a completely voice based system?")
+    speak("        Do u want a completely voice based system?")
 
+    inp0 = inp_yes
+    eel.right_printer(inp0)
+    print(inp0)
+
+    if inp0 == inp_yes:
+        eel.left_printer("Do you know exactly what you want to buy?")
+        speak("Do u know exactly what u want to buy ?")
+        inp0 = inp_no
+        eel.right_printer(inp0)
+        print(inp0)
+ 
+        complete_voice(cur,conn,inp0)
+###########DELETE ME^###########
+################################
             
             
 try:
@@ -37,9 +58,10 @@ try:
     #speak("Do u know exactly what u want to buy ?")
     #inp0 = myCommand("Do u know exactly what u want to buy ?")
 
-    speak("  Do u want a completely voice based system ? ")
+    speak("        Do u want a completely voice based system?")
 
-    inp0 = inp_yes
+    inp0 = "no"
+    # myCommand("Do u want a completely voice based system?")
     print(inp0)
 
     if inp0 == inp_yes:
@@ -80,7 +102,7 @@ try:
     
         inp0 = 'yes'
         #if inp0 = 'yes':
-
+        user_buy=[]
         if inp0 == 'yes':
             
             item_printer(cur)

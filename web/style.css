@@ -78,6 +78,15 @@ p {
     background-size: cover;
 }
 
+.wellcome_area_assistant {
+    background-image: url(img/bg-img/welcome-bg.png);
+    height: 650px;
+    position: relative;
+    z-index: 1;
+    background-position: bottom center;
+    background-size: cover;
+}
+
 .welcome-thumb {
     width: 42%;
     position: absolute;

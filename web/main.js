@@ -2,20 +2,14 @@ async function generateHome() {
 	document.getElementById("home").style.display = "block";
 	document.getElementById("displaycart").style.display = "none";
 	document.getElementById("assistant").style.display = "none";
-	var voicedots = document.getElementsByClassName("voicedot");
-	for(i=0;i<voicedots.length;i++){
-		voicedots[i].classList.remove("active");
-	}
+	removevoicedots();
 }
 async function generateTable() {
 	document.getElementById("test").innerHTML = "";
 	document.getElementById("home").style.display = "none";
 	document.getElementById("displaycart").style.display = "block";
 	document.getElementById("assistant").style.display = "none";
-	var voicedots = document.getElementsByClassName("voicedot");
-	for(i=0;i<voicedots.length;i++){
-		voicedots[i].classList.remove("active");
-	}
+	removevoicedots();
 	var data = document.getElementById("data").value;
 	eel.eel_printer()(dispTable);
 }
@@ -24,12 +18,13 @@ async function generateAssistant() {
 	document.getElementById("home").style.display = "none";
 	document.getElementById("displaycart").style.display = "none";
 	document.getElementById("assistant").style.display = "block";
-	var voicedots = document.getElementsByClassName("voicedot")
-	for(i=0;i<voicedots.length;i++){
-		voicedots[i].classList.toggle("active");
-	}
-	
-	var x = await eel.myCommand()(dispTable);
+	// for(i=0;i<voicedots.length;i++){
+	// 	voicedots[i].classList.toggle("active");
+	// }
+	togglevoicedots();
+	eel.tryblock();
+	// var x = await 
+	// eel.myCommand()(dispTable);
 	// for(i=0;i<voicedots.length;i++){
 	// 	voicedots[i].classList.remove("active");
 	// }
@@ -43,6 +38,36 @@ async function generateBill() {
 // 	alert(string)
 // 	document.getElementById("test").innerHTML = string
 // }
+eel.expose(right_printer);
+function right_printer(str) {
+	  var chat = document.getElementById("chat");
+	  var chathtml = "<div class='message-orange'><p class='message-content'>";
+	  chathtml += str;
+	  chathtml += "</p></div>";
+	  chat.innerHTML += chathtml;
+}
+
+eel.expose(left_printer);
+function left_printer(str) {
+	  var chat = document.getElementById("chat");
+	  var chathtml = "<div class='message-blue'><p class='message-content'>";
+	  chathtml += str;
+	  chathtml += "</p></div>";
+	  chat.innerHTML += chathtml;
+}
+function togglevoicedots(){
+	var voicedots = document.getElementsByClassName("voicedot");
+	for(i=0;i<voicedots.length;i++){
+		voicedots[i].classList.toggle("active");
+	}
+}
+
+function removevoicedots(){
+	var voicedots = document.getElementsByClassName("voicedot");
+	for(i=0;i<voicedots.length;i++){
+		voicedots[i].classList.remove("active");
+	}
+}
 function dispTable(table) {
 	var tablehtml ="<table class='sqldisp'>";
 	var i,j=0;
@@ -60,7 +85,7 @@ function dispTable(table) {
 	}
 	tablehtml+="</table>";
 	document.getElementById("test").innerHTML = tablehtml;
-	var voicedots = document.getElementsByClassName("voicedot")
-	for(i=0;i<voicedots.length;i++){
-		voicedots[i].classList.remove("active");}
+	// var voicedots = document.getElementsByClassName("voicedot")
+	// for(i=0;i<voicedots.length;i++){
+	// 	voicedots[i].classList.remove("active");}
 }
