@@ -28,6 +28,11 @@ async function generateAssistant() {
 	for(i=0;i<voicedots.length;i++){
 		voicedots[i].classList.toggle("active");
 	}
+	
+	var x = await eel.myCommand()(dispTable);
+	// for(i=0;i<voicedots.length;i++){
+	// 	voicedots[i].classList.remove("active");
+	// }
 }
 
 async function generateBill() {
@@ -55,4 +60,7 @@ function dispTable(table) {
 	}
 	tablehtml+="</table>";
 	document.getElementById("test").innerHTML = tablehtml;
+	var voicedots = document.getElementsByClassName("voicedot")
+	for(i=0;i<voicedots.length;i++){
+		voicedots[i].classList.remove("active");}
 }
