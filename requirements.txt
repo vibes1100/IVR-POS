@@ -5,6 +5,5 @@ nltk
 pyaudio
 pyttsx3
 psycopg2
-PostgreSQL 12
 speech_recognition
 

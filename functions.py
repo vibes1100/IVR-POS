@@ -14,11 +14,11 @@ import eel
 def db_connect():
     conn = psycopg2.connect(database="postgres", user="postgres", password="hi", host="127.0.0.1", port="5432")
     cur = conn.cursor()
-    return cur,conn
+    return conn,cur
 
 @eel.expose
 def eel_printer():
-    cur,conn = db_connect()
+    conn,cur = db_connect()
     # return parent_category_selector(cur)
     return invoice_printer(cur)
 
@@ -86,6 +86,13 @@ def printer(current_pointer,p_type,quantity=0):
 def parent_category_selector(cur_pointer):
     
     cur_pointer.execute("SELECT category_id AS id,category_name AS name FROM category_table WHERE category_id=parent_id")
+    rows = cur_pointer.fetchall()
+    cat = [] 
+    for row in rows:
+        cat.append(row[1])
+    text = "Available categories are " + ", ".join(cat[:-1]) + " and " + cat[-1]
+    eel.left_printer(text)
+    speak(text)
     return printer(cur_pointer,1)
 
 def parent_category_speak(cur):
@@ -103,6 +110,13 @@ def child_category_selector(cur_pointer,p_id):
     
     query = str("SELECT category_id, category_name FROM category_table WHERE parent_id IN (SELECT parent_id FROM category_table WHERE category_name ='" + str(p_id)+"') AND parent_id!=category_id")
     cur_pointer.execute(query)
+    rows = cur_pointer.fetchall()
+    sub_cat = [] 
+    for row in rows:
+        sub_cat.append(row[1])
+    text = "Available categories under "+ p_id  +" are " + ", ".join(sub_cat[:-1]) + " and " + sub_cat[-1]
+    eel.left_printer(text)
+    speak(text)
     printer(cur_pointer,2)
 
 def child_category_speak(cur,p_id):
@@ -120,10 +134,14 @@ def item_selector(cur_pointer,p_id):
     query = "SELECT * FROM items WHERE category_id IN (SELECT category_id FROM category_table WHERE category_name ='"  + p_id + "')"
     cur_pointer.execute(query)
     rows = cur_pointer.fetchall()
-    print('Item  |\t\n id  |\t','Item name',"\t|")
-    print("--------------------------")
+    # print('Item  |\t\n id  |\t','Item name',"\t|")
+    # print("--------------------------")
+    items = []
     for row in rows : 
-        print(row[0],'  |',row[2],"\t|")
+        items.append(row[2])
+    text = "Avaiailable items under " + p_id + " are " + ", ".join(items[:-1]) + " and " + items[-1]
+    eel.left_printer(text)
+    speak(text)
     return(rows)
     #printer(cur_pointer,3)
     
@@ -151,7 +169,10 @@ def item_printer(cur_pointer):
 
 def stopword_remover(text):
     req = []
-    for word in text.lower().split():
+    stop_words = ['i','want','to','order','and','some','would','like','go','visit','view']
+    text = text.lower()
+    text = word_tokenize(text)
+    for word in text:
         if word not in stop_words:
             req.append(word)
     return req

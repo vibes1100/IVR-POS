@@ -29,22 +29,54 @@ eel.init('web')
 ##########SAME AS THE TRY BLOCK AFTER THIS######################
 @eel.expose
 def tryblock():
-    cur,conn = db_connect()
-    eel.left_printer("Do you want a completely voice based system?")
-    speak("        Do u want a completely voice based system?")
-
-    inp0 = inp_yes
-    eel.right_printer(inp0)
-    print(inp0)
+    conn,cur = db_connect()
+    #eel.left_printer("Do you want a completely voice based system?")
+    #speak("        Do u want a completely voice based system?")
+    eel.left_printer("Do you know exactly what you want to buy?")
+    speak("Do u know exactly what u want to buy ?")
+    inp0 = inp_no
+    #inp0 = myCommand("Do u know exactly what u want to buy ?")
+    eel.right_printer(inp0.capitalize())
 
     if inp0 == inp_yes:
-        eel.left_printer("Do you know exactly what you want to buy?")
-        speak("Do u know exactly what u want to buy ?")
-        inp0 = inp_no
-        eel.right_printer(inp0)
-        print(inp0)
+        eel.left_printer("Hi")
+    else : 
+        parent_category_selector(cur)
+        
+        inp1 = 'Bakery'
+        #inp1 = myCommand("Select a category")
+        eel.right_printer(inp1)
+        child_category_selector(cur,inp1)
+        
+        inp2 = 'Bread'
+        #inp2 = myCommand("Select a subcategory")
+        eel.right_printer(inp2)
+        item_selector(cur,inp2)
+
+        inp3 = 'i want britannia mlk bread'
+        #inp3 = myCommand("Item name")
+        eel.right_printer(inp3.capitalize())
+        inp3 = stopword_remover(inp3)
+
+        eel.left_printer("How much")
+        quant = 1
+        #quant = myCommand("Enter quantity")
+        eel.right_printer(quant)
+        x = db_searcher(inp3,cur,quant)
+        eel.left_printer("Finish")
+
+    # inp0 = inp_yes
+    # #eel.right_printer(inp0)
+    # print(inp0)
+
+    # if inp0 == inp_yes:
+    #     eel.left_printer("Do you know exactly what you want to buy?")
+    #     speak("Do u know exactly what u want to buy ?")
+    #     inp0 = inp_no
+    #     eel.right_printer(inp0)
+    #     print(inp0)
  
-        complete_voice(cur,conn,inp0)
+    #     complete_voice(cur,conn,inp0)
 ###########DELETE ME^###########
 ################################
             
@@ -73,34 +105,28 @@ try:
  
         complete_voice(cur,conn,inp0)
 
-            
-        #inp2 = myCommand("Item Name")
-
-        #item_selector(cur,inp2.capitalize())
-
-
-        """
          
-            stopword_remover(inp1)
+        # stopword_remover(inp1)
             
-            child_category_selector(cur,inp1.capitalize())
-            speak("Please Select a sub category from these")
+        # child_category_selector(cur,inp1.capitalize())
+        # speak("Please Select a sub category from these")
             
-            #inp2 = myCommand("Which sub_category")
-            inp2="bread"
-            stopword_remover(inp2)
-            item_selector(cur,inp2.capitalize())
+        # #inp2 = myCommand("Which sub_category")
+        # inp2="bread"
+        # stopword_remover(inp2)
+        # item_selector(cur,inp2.capitalize())
             
-            #inp3 = myCommand("Which item ?")
-            inp3 = ['britannia', 'milk', 'bread']
-            #stopword_remover(inp3)
-            user_buy.append((db_searcher(inp3,cur,4)))
-            print(user_buy)
-        """
+        # #inp3 = myCommand("Which item ?")
+        # inp3 = ['britannia', 'milk', 'bread']
+        # #stopword_remover(inp3)
+        # user_buy.append((db_searcher(inp3,cur,4)))
+        # print(user_buy)
+        
+
     else :
         eel.start('index.html', size=(540, 960))
     
-        inp0 = 'yes'
+        inp0 = 'no'
         #if inp0 = 'yes':
         user_buy=[]
         if inp0 == 'yes':
@@ -118,6 +144,7 @@ try:
             
             #inp1 = myCommand("Which category")
             inp1='bakery'
+            print(inp1)
             stopword_remover(inp1)
             
             child_category_selector(cur,inp1.capitalize())
@@ -125,25 +152,29 @@ try:
             
             #inp2 = myCommand("Which sub_category")
             inp2="bread"
+            print(inp2)
             stopword_remover(inp2)
             item_selector(cur,inp2.capitalize())
             
             #inp3 = myCommand("Which item ?")
-            inp3 = ['britannia', 'milk', 'bread']
+            inp3 = 'britannia milk bread'
+            print(inp3)
+            inp3 = word_tokenize(inp3)
+
             #stopword_remover(inp3)
             user_buy.append((db_searcher(inp3,cur,4)))
             print(user_buy)
 
-        """
-    for i in range(n):
-        inp1 = input("Category") 
-        inp2 = input("Sub_cat")
-        inp3 = input("item")
-        inp4 = int(input())
+    
+    # for i in range(n):
+    #     inp1 = input("Category") 
+    #     inp2 = input("Sub_cat")
+    #     inp3 = input("item")
+    #     inp4 = int(input())
         
-        user_buy.append(combiner(cur,inp1,inp2,inp3,inp4))
-        print(user_buy)
-    """ 
+    #     user_buy.append(combiner(cur,inp1,inp2,inp3,inp4))
+    #     print(user_buy)
+    
     
 except psycopg2.Error as e:
     print("I am unable to connect to the database")
@@ -154,49 +185,49 @@ except psycopg2.Error as e:
 
    
 
-"""
-rice_quant = 10
-req=[]
 
-req_list={}
-stock = {'rice':10 , 'sauce':4 ,'sooji':5 , 'maida':5, 'aata':10 ,'pasta':12 ,'lasagne sheets':10,'cheese':10}
-print(stock)
+# rice_quant = 10
+# req=[]
+
+# req_list={}
+# stock = {'rice':10 , 'sauce':4 ,'sooji':5 , 'maida':5, 'aata':10 ,'pasta':12 ,'lasagne sheets':10,'cheese':10}
+# print(stock)
 
 
 
-for i in range(len(req)):
-    speak('How much '+ str(req[i]))
-    quant = myCommand('How much '+ str(req[i]))
-    req_list[req[i]] = req_list.get(req[i],int(quant))
+# for i in range(len(req)):
+#     speak('How much '+ str(req[i]))
+#     quant = myCommand('How much '+ str(req[i]))
+#     req_list[req[i]] = req_list.get(req[i],int(quant))
     
 
-print(req_list)
+# print(req_list)
 
-av = []
-nq = []
-lq = []
+# av = []
+# nq = []
+# lq = []
 
-for word in req_list.keys():
+# for word in req_list.keys():
     
-    if word in stock.keys() and req_list[word] < stock[word]:
-        text = "We have " + str(word) + " in stock"
-        av.append(word)
-        speak(text)
-        print(text)
+#     if word in stock.keys() and req_list[word] < stock[word]:
+#         text = "We have " + str(word) + " in stock"
+#         av.append(word)
+#         speak(text)
+#         print(text)
     
-    elif word in req_list.keys() and word not in stock.keys():
-        nq.append(word) 
+#     elif word in req_list.keys() and word not in stock.keys():
+#         nq.append(word) 
 
     
-    elif word in req_list.keys() and word in stock.keys() and req_list[word] > stock[word]:
-        lq.append(word) 
+#     elif word in req_list.keys() and word in stock.keys() and req_list[word] > stock[word]:
+#         lq.append(word) 
         
-if len(nq)!= 0:
-    text_not_there = "We will have to order " + " ".join(nq[:-1]) + ' and ' + nq[-1]
-    speak(text_not_there)
+# if len(nq)!= 0:
+#     text_not_there = "We will have to order " + " ".join(nq[:-1]) + ' and ' + nq[-1]
+#     speak(text_not_there)
 
-for word in lq:
+# for word in lq:
 
-    text_stock_less = "Sorry u ordered " +str(req_list[word]) +" of " + word + " but we only have " + str(stock[word]) 
-    speak(text_stock_less)
-"""    
+#     text_stock_less = "Sorry u ordered " +str(req_list[word]) +" of " + word + " but we only have " + str(stock[word]) 
+#     speak(text_stock_less)
+   
