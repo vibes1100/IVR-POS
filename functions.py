@@ -11,15 +11,16 @@ from nltk import word_tokenize
 import psycopg2
 import eel
 
-def dbConnect():
+def db_connect():
     conn = psycopg2.connect(database="postgres", user="postgres", password="hi", host="127.0.0.1", port="5432")
     cur = conn.cursor()
-    return cur
+    return cur,conn
 
 @eel.expose
 def eel_printer():
-    cur = dbConnect()
-    return parent_category_selector(cur)
+    cur,conn = db_connect()
+    # return parent_category_selector(cur)
+    return invoice_printer(cur)
 
 def speak(audio):
     engine = pyttsx3.init('sapi5') 
@@ -201,6 +202,11 @@ def invoice_generator(cur,user_buy,conn):
 
     conn.commit()
     print("All Sucessfull...")
+
+def invoice_printer(cur_pointer):
+    
+    cur_pointer.execute("SELECT invoice_id, item_name, coster, quantity, overall FROM invoice WHERE invoice_id = (SELECT invoice_id FROM invoice ORDER BY invoice_id DESC LIMIT 1)")
+    return printer(cur_pointer,1)
 
 def known_item_voice(cur):
     inp1='yes'

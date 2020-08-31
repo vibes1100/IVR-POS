@@ -29,7 +29,7 @@ eel.init('web')
 ##########SAME AS THE TRY BLOCK AFTER THIS######################
 @eel.expose
 def tryblock():
-    cur = dbConnect()
+    cur,conn = db_connect()
     eel.left_printer("Do you want a completely voice based system?")
     speak("        Do u want a completely voice based system?")
 
@@ -60,7 +60,7 @@ try:
 
     speak("        Do u want a completely voice based system?")
 
-    inp0 = "no"
+    inp0 = inp_no
     # myCommand("Do u want a completely voice based system?")
     print(inp0)
 
