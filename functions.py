@@ -90,9 +90,9 @@ def parent_category_selector(cur_pointer):
     cat = [] 
     for row in rows:
         cat.append(row[1])
-    text = "Available categories are " + ", ".join(cat[:-1]) + " and " + cat[-1]
+    text = "Available categories are " + "<li>" + "<li>".join(cat)
     eel.left_printer(text)
-    speak(text)
+    speak("U can view the available catgeories on the screen")
     return printer(cur_pointer,1)
 
 def parent_category_speak(cur):
@@ -114,9 +114,9 @@ def child_category_selector(cur_pointer,p_id):
     sub_cat = [] 
     for row in rows:
         sub_cat.append(row[1])
-    text = "Available categories under "+ p_id  +" are " + ", ".join(sub_cat[:-1]) + " and " + sub_cat[-1]
+    text = 'Available subcategories are ' + "<li>" + "<li>".join(sub_cat)
     eel.left_printer(text)
-    speak(text)
+    speak("Check sreen")
     printer(cur_pointer,2)
 
 def child_category_speak(cur,p_id):
@@ -126,8 +126,9 @@ def child_category_speak(cur,p_id):
     rows = cur.fetchall()
     for row in rows :
         z.append(row[1])
-    text = 'Available subcategories are ' + " ".join(z[:-1]) + " and " + z[-1]
+    text = "Available categories under "+ p_id  +" are " + ", ".join(z[:-1]) + " and " + z[-1]
     speak(text)
+    
 
 def item_selector(cur_pointer,p_id):
    
@@ -139,9 +140,9 @@ def item_selector(cur_pointer,p_id):
     items = []
     for row in rows : 
         items.append(row[2])
-    text = "Avaiailable items under " + p_id + " are " + ", ".join(items[:-1]) + " and " + items[-1]
+    text = "Avaiailable items under " + p_id + " are " + "<li>" + "<li>".join(items)
     eel.left_printer(text)
-    speak(text)
+    speak("See the screen re")
     return(rows)
     #printer(cur_pointer,3)
     
@@ -157,14 +158,20 @@ def item_speaker(cur,p_id):
 
 def item_printer(cur_pointer):
     query = "SELECT * FROM items ORDER BY item_id"
+    x = []
     #select invoice_id from invoice order by invoice_id desc limit 1
     cur_pointer.execute(query)
     rows = cur_pointer.fetchall()
+
+    for row in rows:
+        x.append(row[2])
     
-    print('Item |\t\n id  |\t','Item name',"\t|")
-    print("--------------------------")
-    for row in rows : 
-        print(row[0],'   |',row[2],"\t|")
+    x = "<li>" + "<li>".join(x)
+    return x
+    # print('Item |\t\n id  |\t','Item name',"\t|")
+    # print("--------------------------")
+    # for row in rows : 
+    #     print(row[0],'   |',row[2],"\t|")
     
 
 def stopword_remover(text):
@@ -245,6 +252,74 @@ def known_item_voice(cur):
         inp1 = input("Enter yes/no")
         #inp1 = myCommand("Yes/no")
     return user_buy
+
+def known_item(conn,cur,inp0='yes'):
+    
+    speak("Please check the screen to view all the items")
+    x = "Available items are : \n" + item_printer(cur)
+    eel.left_printer(x)
+    
+    user_buy = []
+    
+    while(inp0=='yes'):
+            
+        inp1 = 'i want britannia milk bread'
+        #inp1 = myCommand("Item name")
+        eel.right_printer(inp1.capitalize())
+        inp1 = stopword_remover(inp1)
+            
+        speak("How much ?")
+        eel.left_printer("How much ?")
+        quant = 6
+        #quant = myCommand("How much")
+        eel.right_printer(quant)
+            
+        user_buy.append(db_searcher(inp1,cur,quant))
+            
+        speak("Would u like to add anything else ?")
+        eel.left_printer("Would u like to add anything else ?")
+        #inp0 = myCommand("Anything else")
+        #inp0 = inp_no
+        inp0 = input()
+    
+    invoice_generator(cur,user_buy,conn)
+
+def unknown_item(conn,cur,inp0='yes'):
+
+    user_buy = []
+
+    while(inp0=='yes'):
+
+        parent_category_selector(cur)
+            
+        inp1 = 'Bakery'
+        #inp1 = myCommand("Select a category")
+        eel.right_printer(inp1)
+        child_category_selector(cur,inp1)
+            
+        inp2 = 'Bread'
+        #inp2 = myCommand("Select a subcategory")
+        eel.right_printer(inp2)
+        item_selector(cur,inp2)
+
+        inp3 = 'i want britannia milk bread'
+        #inp3 = myCommand("Item name")
+        eel.right_printer(inp3.capitalize())
+        inp3 = stopword_remover(inp3)
+        eel.left_printer("How much")
+        quant = 1
+        #quant = myCommand("Enter quantity")
+        eel.right_printer(quant)
+        user_buy.append(db_searcher(inp3,cur,quant))
+        
+        speak("Would u like to add anything else ?")
+        eel.left_printer("Would u like to add anything else ?")
+        #inp0 = myCommand("Anything else")
+        #inp0 = inp_no
+        inp0 = input()
+
+    invoice_generator(cur,user_buy,conn)
+
 
 def unknown_item_voice(cur,conn):
     parent_category_speak(cur)
