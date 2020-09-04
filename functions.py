@@ -12,7 +12,7 @@ import psycopg2
 import eel
 
 def db_connect():
-    conn = psycopg2.connect(database="postgres", user="postgres", password="hi", host="127.0.0.1", port="5432")
+    conn = psycopg2.connect(database="IVR_POS", user="postgres", password="hi", host="127.0.0.1", port="5432")
     cur = conn.cursor()
     return conn,cur
 

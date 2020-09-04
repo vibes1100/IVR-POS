@@ -1,10 +1,12 @@
 async function generateHome() {
+	removeInitial();
 	document.getElementById("home").style.display = "block";
 	document.getElementById("displaycart").style.display = "none";
 	document.getElementById("assistant").style.display = "none";
 	removevoicedots();
 }
 async function generateTable() {
+	removeInitial();
 	document.getElementById("test").innerHTML = "";
 	document.getElementById("home").style.display = "none";
 	document.getElementById("displaycart").style.display = "block";
@@ -15,6 +17,7 @@ async function generateTable() {
 }
 
 async function generateAssistant() {
+	removeInitial();
 	document.getElementById("home").style.display = "none";
 	document.getElementById("displaycart").style.display = "none";
 	document.getElementById("assistant").style.display = "block";
@@ -29,10 +32,16 @@ async function generateAssistant() {
 	// 	voicedots[i].classList.remove("active");
 	// }
 }
-
 async function generateBill() {
 	var data = document.getElementById("data").value;
 	eel.eel_printer()(dispTable);
+}
+
+function removeInitial(){
+	sections=document.getElementsByTagName("section");
+	for(i=0;i<sections.length;i++){
+		sections[i].classList.remove("initial");
+	}
 }
 // function setImage(string) {
 // 	alert(string)

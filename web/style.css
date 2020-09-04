@@ -30,12 +30,14 @@ p {
     margin-top: 0;
 }
 
-#displaycart{
-    display: none;
+#displaycart.initial{
+    visibility: hidden;
+    height: 0px;
 }
 
-#assistant{
-    display: none;
+#assistant.initial{
+    visibility: hidden;
+    height: 0px;
 }
 .heading-text > p {
     font-size: 16px;
