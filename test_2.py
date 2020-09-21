@@ -14,7 +14,9 @@ from gtts       import gTTS
 from nltk       import word_tokenize
 from functions  import *
 
-x = 5
+runtype = 'test' # test -> harcoded inputs
+#runtype = 'demo' # demo -> speech inputs
+
 inp_yes = 'yes'
 inp_no = 'no'
 stop_words = ['i','want','to','order','and','some','would',\
@@ -29,20 +31,6 @@ eel.init('web')
     
 #########ONLY FOR TESTING!######
 ##########SAME AS THE TRY BLOCK AFTER THIS######################
-@eel.expose
-def tryblock():
-    conn,cur = db_connect()
-    eel.left_printer("Do you know exactly what you want to buy?")
-    speak("Do u know exactly what u want to buy ?")
-    inp0 = inp_no
-    #inp0 = myCommand("Do u know exactly what u want to buy ?")
-    eel.right_printer(inp0.capitalize())
-
-    if inp0 == inp_yes:
-        known_item(conn,cur)
-        
-    else : 
-        unknown_item(conn,cur)
 
 ###########DELETE ME^###########
 ################################

@@ -11,6 +11,9 @@ from nltk import word_tokenize
 import psycopg2
 import eel
 
+runtype = 'test' # test -> harcoded inputs
+#runtype = 'demo' # demo -> speech inputs
+
 def db_connect():
     conn = psycopg2.connect(database="IVR_POS", user="postgres", password="hi", host="127.0.0.1", port="5432")
     cur = conn.cursor()
@@ -84,7 +87,8 @@ def printer(current_pointer,p_type,quantity=0):
     return rows
 
 def parent_category_selector(cur_pointer):
-    
+
+    #print(runtype)    
     cur_pointer.execute("SELECT category_id AS id,category_name AS name FROM category_table WHERE category_id=parent_id")
     rows = cur_pointer.fetchall()
     cat = [] 
@@ -92,7 +96,7 @@ def parent_category_selector(cur_pointer):
         cat.append(row[1])
     text = "Available categories are " + "<li>" + "<li>".join(cat)
     eel.left_printer(text)
-    speak("U can view the available catgeories on the screen")
+    speak("U can view the available categories on the screen")
     return printer(cur_pointer,1)
 
 def parent_category_speak(cur):
@@ -116,7 +120,7 @@ def child_category_selector(cur_pointer,p_id):
         sub_cat.append(row[1])
     text = 'Available subcategories are ' + "<li>" + "<li>".join(sub_cat)
     eel.left_printer(text)
-    speak("Check sreen")
+    speak("Please check your screen for the Available sub-categories")
     printer(cur_pointer,2)
 
 def child_category_speak(cur,p_id):
@@ -142,7 +146,7 @@ def item_selector(cur_pointer,p_id):
         items.append(row[2])
     text = "Avaiailable items under " + p_id + " are " + "<li>" + "<li>".join(items)
     eel.left_printer(text)
-    speak("See the screen re")
+    speak("Please choose from the items mentioned on the screen")
     return(rows)
     #printer(cur_pointer,3)
     
@@ -200,7 +204,7 @@ def db_searcher(att,cur_pointer,quantt):
     rows = cur_pointer.fetchall()
     for row in rows : 
         #y.append(row[0])
-        y.append([row[0],row[2],row[3],quantt,row[3]*quantt])
+        y.append([row[0],row[2],row[3],quantt,row[3]*quantt,row[5]])
     return y
     #r = 
     printer(cur_pointer,3,quantt)
@@ -213,24 +217,45 @@ def combiner(curr_pointer,inpp,inpp2,inpp3,quantity):
     item_selector(curr_pointer,inpp2)
     return db_searcher(stopword_remover(inpp3),cur,quantity)
 
+# def get_stock(cur,item_id):
+#     query = "SELECT * FROM stocks_table WHERE item_id = " + item_id
+#     cur.execute(query)
+#     rows = cur.fetchall()
+#     return rows
+
+def stock_update(conn,cur,records_to_update):
+
+    sql_update_query = """UPDATE items SET stock = stock - %s WHERE item_id = %s"""
+
+    cur.executemany(sql_update_query, records_to_update)
+    conn.commit()
+    print(cur.rowcount, "Record updated successfully into stock")
+
 def invoice_generator(cur,user_buy,conn):
     query = "SELECT nextval('invoice_seq')"
     cur.execute(query)
     rows = cur.fetchall()
     x = rows[0][0]
-                
+    records_to_update = []
+    sql_update_query = """UPDATE stocks_table SET quantity = %s WHERE item_id = %s"""
+
     for i in range(len(user_buy)):
         joiner = str(user_buy[i][0][2]) + ", " + str(user_buy[i][0][3]) + ", " + str(user_buy[i][0][4])
         record_to_insert = str(x) + ", " + str(user_buy[i][0][0]) + ", '" + user_buy[i][0][1] + "', " + joiner
                     
         query = "INSERT INTO invoice (invoice_id, item_id, item_name, coster, quantity, overall) \
                 VALUES (" + record_to_insert + ")"
+        
+        records_to_update.append((user_buy[i][0][3],user_buy[i][0][0]))
 
         cur.execute(query);
-
+        
+    stock_update(conn,cur,records_to_update)
     conn.commit()
     print("All Sucessfull...")
 
+
+#result = cur.executemany(sql_update_query, records_to_update)
 def invoice_printer(cur_pointer):
     
     cur_pointer.execute("SELECT invoice_id, item_name, coster, quantity, overall FROM invoice WHERE invoice_id = (SELECT invoice_id FROM invoice ORDER BY invoice_id DESC LIMIT 1)")
@@ -334,6 +359,27 @@ def unknown_item_voice(cur,conn):
             
     user_buy = known_item_voice(cur)
     invoice_generator(cur,user_buy,conn)
+
+@eel.expose
+def tryblock():
+    inp_no = 'no'
+    inp_yes = 'yes'
+    conn,cur = db_connect()
+    eel.left_printer("Do you know exactly what you want to buy?")
+    speak("Do u know exactly what u want to buy ?")
+
+    if runtype == 'test' : 
+        inp0 = inp_no
+    else : 
+        inp0 = myCommand("Do u know exactly what u want to buy ?")
+
+    eel.right_printer(inp0.capitalize())
+
+    if inp0 == inp_yes:
+        known_item(conn,cur)
+        
+    else : 
+        unknown_item(conn,cur)
 
 def complete_voice(cur,conn,inp0):
 
