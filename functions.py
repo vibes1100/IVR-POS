@@ -20,10 +20,15 @@ def db_connect():
     return conn,cur
 
 @eel.expose
-def eel_printer():
+def basket_printer():
     conn,cur = db_connect()
     # return parent_category_selector(cur)
     return invoice_printer(cur)
+
+@eel.expose
+def inv_printer():
+    conn,cur = db_connect()
+    return item_printer(cur)
 
 def speak(audio):
     engine = pyttsx3.init('sapi5') 
@@ -167,15 +172,16 @@ def item_printer(cur_pointer):
     cur_pointer.execute(query)
     rows = cur_pointer.fetchall()
 
-    for row in rows:
-        x.append(row[2])
+    # for row in rows:
+    #     x.append(row[2])
     
-    x = "<li>" + "<li>".join(x)
-    return x
-    # print('Item |\t\n id  |\t','Item name',"\t|")
-    # print("--------------------------")
-    # for row in rows : 
-    #     print(row[0],'   |',row[2],"\t|")
+    # x = "<li>" + "<li>".join(x)
+    # return x
+    print('Item |\t\n id  |\t','Item name',"\t|")
+    print("--------------------------")
+    for row in rows : 
+        print(row[0],'   |',row[2],"\t|")
+    return rows
     
 
 def stopword_remover(text):

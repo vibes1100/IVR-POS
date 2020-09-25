@@ -78,6 +78,7 @@ input[name="menu"]{display:none}
 
 .purpleicon{
   color: purple;
+  font-size: 30px;
 }
 
 .purpleicon:hover{

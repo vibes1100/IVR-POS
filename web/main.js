@@ -3,6 +3,8 @@ async function generateHome() {
 	document.getElementById("home").style.display = "block";
 	document.getElementById("displaycart").style.display = "none";
 	document.getElementById("assistant").style.display = "none";
+	document.getElementById("services").style.display = "none";
+	document.getElementById("inventory").style.display = "none";
 	removevoicedots();
 }
 async function generateTable() {
@@ -11,9 +13,11 @@ async function generateTable() {
 	document.getElementById("home").style.display = "none";
 	document.getElementById("displaycart").style.display = "block";
 	document.getElementById("assistant").style.display = "none";
+	document.getElementById("services").style.display = "none";
+	document.getElementById("inventory").style.display = "none";
 	removevoicedots();
 	var data = document.getElementById("data").value;
-	eel.eel_printer()(dispTable);
+	eel.basket_printer()(dispTable);
 }
 
 async function generateAssistant() {
@@ -21,6 +25,8 @@ async function generateAssistant() {
 	document.getElementById("home").style.display = "none";
 	document.getElementById("displaycart").style.display = "none";
 	document.getElementById("assistant").style.display = "block";
+	document.getElementById("services").style.display = "none";
+	document.getElementById("inventory").style.display = "none";
 	// for(i=0;i<voicedots.length;i++){
 	// 	voicedots[i].classList.toggle("active");
 	// }
@@ -32,9 +38,32 @@ async function generateAssistant() {
 	// 	voicedots[i].classList.remove("active");
 	// }
 }
+async function generateServices() {
+	removeInitial();
+	document.getElementById("home").style.display = "none";
+	document.getElementById("displaycart").style.display = "none";
+	document.getElementById("assistant").style.display = "none";
+	document.getElementById("services").style.display = "block";
+	document.getElementById("inventory").style.display = "none";
+	removevoicedots();
+
+}
 async function generateBill() {
 	var data = document.getElementById("data").value;
-	eel.eel_printer()(dispTable);
+	eel.basket_printer()(dispTable);
+}
+
+async function generateInventory() {
+	removeInitial();
+	document.getElementById("stock").innerHTML = "";
+	document.getElementById("home").style.display = "none";
+	document.getElementById("displaycart").style.display = "none";
+	document.getElementById("assistant").style.display = "none";
+	document.getElementById("services").style.display = "none";
+	document.getElementById("inventory").style.display = "block";
+	removevoicedots();
+	var data = document.getElementById("data").value;
+	eel.inv_printer()(dispTable);
 }
 
 function removeInitial(){
@@ -94,6 +123,7 @@ function dispTable(table) {
 	}
 	tablehtml+="</table>";
 	document.getElementById("test").innerHTML = tablehtml;
+	document.getElementById("stock").innerHTML = tablehtml;
 	// var voicedots = document.getElementsByClassName("voicedot")
 	// for(i=0;i<voicedots.length;i++){
 	// 	voicedots[i].classList.remove("active");}

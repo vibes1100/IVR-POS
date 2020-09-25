@@ -39,6 +39,23 @@ p {
     visibility: hidden;
     height: 0px;
 }
+#services.initial{
+    visibility: hidden;
+    height: 0px;
+}
+#inventory.initial{
+    visibility: hidden;
+    height: 0px;
+}
+.basket{
+    padding-top: 15px;
+    padding-right: 15px;
+    text-align: right;
+}
+.basket > i{
+    font-size: 30px;
+    color: white;
+}
 .heading-text > p {
     font-size: 16px;
 }
@@ -73,7 +90,8 @@ p {
 
 .wellcome_area {
     background-image: url(img/bg-img/welcome-bg.png);
-    height: 500px;
+    /* height: 500px; */
+    height: 650px;
     position: relative;
     z-index: 1;
     background-position: bottom center;
