@@ -82,12 +82,19 @@ p {
     margin-top: 10px;
 }
 .sqldisp pre{
-    font-family: sans-serif;
+    font-family: 'Cabin',sans-serif;
     font-weight: 500;
     color: #373737;
     font-size: 20px;
 }
-
+h2.sqldisp{
+    font-family: 'Cabin',sans-serif;
+    font-weight: 500;
+    color: black;
+    font-size: 40px;
+    padding: 0px;
+    border-bottom: 0px;
+}
 .wellcome_area {
     background-image: url(img/bg-img/welcome-bg.png);
     /* height: 500px; */

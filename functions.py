@@ -258,7 +258,8 @@ def invoice_generator(cur,user_buy,conn):
         
     stock_update(conn,cur,records_to_update)
     conn.commit()
-    print("All Sucessfull...")
+    eel.removevoicedots()
+    print("All Successful...")
 
 
 #result = cur.executemany(sql_update_query, records_to_update)
