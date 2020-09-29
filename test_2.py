@@ -62,7 +62,7 @@ try:
         
 
     else :
-        eel.start('index.html', size=(540, 960))
+        eel.start('login.html', size=(540, 960))
     
         # inp0 = 'no'
         # #if inp0 = 'yes':

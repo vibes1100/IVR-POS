@@ -165,3 +165,9 @@ function dispStockTable(table) {
 	// for(i=0;i<voicedots.length;i++){
 	// 	voicedots[i].classList.remove("active");}
 }
+
+/////////////////////////test
+function generateNewPage(){
+	eel.newPage();
+	window.close()
+}

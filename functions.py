@@ -395,3 +395,7 @@ def complete_voice(cur,conn,inp0):
         invoice_generator(cur,user_buy,conn)
     else : 
         unknown_item_voice(cur,conn)
+
+@eel.expose
+def newPage():
+    eel.start('index.html', size=(540, 960))
