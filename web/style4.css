@@ -11,23 +11,21 @@
   }
   
   .card {
-    margin: 30px auto;
-    width: 600px;
+    margin: 10px auto;
+    width: 95%;
     height: 275px;
     border-radius: 40px;
-  box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.22);
+    box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.22);
     cursor: pointer;
     transition: 0.4s;
   }
   
   .card .card_image {
-    width: inherit;
     height: inherit;
     border-radius: 40px;
   }
   
   .card .card_image img {
-    width: inherit;
     height: inherit;
     border-radius: 40px;
     object-fit: cover;
@@ -53,24 +51,25 @@
   .card_bg1{
     background-image: url(img/bg-img/returns2.png);
     background-repeat: no-repeat;
-    background-position: 50% 2%;
+    background-position: 50% 20%;
     background-size: 35%;
   }
 
   .card_bg2{
     background-image: url(img/bg-img/billing2.png); 
     background-repeat: no-repeat;
-    background-position: 50% 12%;
+    background-position: 50% 20%;
     background-size: 30%;
   }
   .card_bg3{
     background-image: url(img/bg-img/feedback.jpg); 
     background-repeat: no-repeat;
-    background-position: 50% 2%;
+    background-position: 50% 20%;
     background-size: 36%;
   }
   .card4{
-      height: 100px;
+      height: 120px;
+      width: 120px;
   }
   .card:hover {
     transform: scale(0.9, 0.9);

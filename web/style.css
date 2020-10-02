@@ -30,7 +30,7 @@ p {
     margin-top: 0;
 }
 
-#displaycart.initial{
+/* #displaycart.initial{
     visibility: hidden;
     height: 0px;
 }
@@ -46,7 +46,42 @@ p {
 #inventory.initial{
     visibility: hidden;
     height: 0px;
+} */
+section.activesec{
+    display: block !important;
+    -webkit-animation: slide-up .2s ease-out;
 }
+
+section#assistant.activesec{
+    display: block !important;
+    -webkit-animation: fade-in .5s ease-out;
+}
+
+section#displaycart.activesec{
+    display: block !important;
+    -webkit-animation: slide-left .2s ease-out;
+}
+
+@-webkit-keyframes slide-up {
+    0% { opacity: 0; -webkit-transform: translateY(100%); }   
+  100% { opacity: 1; -webkit-transform: translateY(0); }
+}
+
+@-webkit-keyframes fade-in {
+    0% { opacity: 0;}   
+  100% { opacity: 1;}
+}
+
+@-webkit-keyframes slide-left {
+    0% { opacity: 0; -webkit-transform: translateX(100%); }   
+  100% { opacity: 1; -webkit-transform: translateX(0); }
+}
+
+section.initial{
+    visibility: hidden;
+    height: 0px;
+}
+
 .basket{
     padding-top: 15px;
     padding-right: 15px;
@@ -93,12 +128,12 @@ h2.sqldisp{
     color: black;
     font-size: 40px;
     padding: 0px;
-    border-bottom: 0px;
+    border: 0px;
 }
 .wellcome_area {
     background-image: url(img/bg-img/welcome-bg.png);
     /* height: 500px; */
-    height: 650px;
+    height: 400px;
     position: relative;
     z-index: 1;
     background-position: bottom center;

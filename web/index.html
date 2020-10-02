@@ -15,9 +15,9 @@
     
 </head>
 
-<body>
-    <section class="wellcome_area clearfix" id="home">
-            <nav class="navbar navbar-expand-sm navbar-light topNavbar">
+<body onload="initialDisp()">
+    <section class="wellcome_area_assistant clearfix" id="home">
+            <nav class="navbar navbar-expand navbar-light topNavbar">
                 <div class="collapse navbar-collapse" id="navbarNav"> 
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
@@ -25,8 +25,10 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav">
-                        <li class="nav-item" onclick="generateTable()">
+                        <li class="nav-item" onclick="generateInvoice()">
+                            <label for="six">
                             <i class="material-icons nav-link">shopping_basket</i>
+                            </label>
                         </li>
                     </ul>
                 </div>
@@ -36,7 +38,7 @@
             </div> -->
         <div class="container h-100">
             <div class="row h-100 align-items-center">
-                <div class="col-10 col-md">
+                <div class="col-12 col-md">
                     <div class="wellcome-heading">
                         <h2>IVR-POS</h2>
                         <p>Making Shopping Easier :)</p>
@@ -44,7 +46,7 @@
                     <div class="get-start-area">
                         <form class="form-inline">
                             <input type="button" id="data" class="form-control email" value="Generate Bill">
-                            <input type="button" class="submit" value="Get QR Code" onclick="generateTable()">
+                            <input type="button" class="submit" value="Get QR Code" onclick="hideAll()">
                         </form>
                     </div>
                 </div>
@@ -53,6 +55,22 @@
     </section>
     
     <section class="wellcome_area clearfix initial" id="displaycart">
+        <nav class="navbar navbar-expand navbar-light topNavbar">
+            <div class="collapse navbar-collapse" id="navbarNav"> 
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item" onclick="generateHome()">
+                        <i class="material-icons nav-link">arrow_back</i> 
+                    </li>
+                </ul>
+                <!-- <ul class="navbar-nav">
+                    <li class="nav-item" onclick="generateInvoice()">
+                        <label for="six">
+                        <i class="material-icons nav-link">shopping_basket</i>
+                        </label>
+                    </li>
+                </ul> -->
+            </div>
+        </nav>
         <div class="container h-100">
             <div class="row h-100 align-items-center">
                 <div class="col-12 col-md">
@@ -70,6 +88,22 @@
     </section>
 
     <section class="wellcome_area clearfix initial" id="inventory">
+        <nav class="navbar navbar-expand navbar-light topNavbar">
+            <div class="collapse navbar-collapse" id="navbarNav"> 
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <i class="material-icons nav-link">menu</i>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item" onclick="generateInvoice()">
+                        <label for="six">
+                            <i class="material-icons nav-link">shopping_basket</i>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+        </nav>
         <div class="container h-100">
             <div class="row h-100 align-items-center">
                 <div class="col-12 col-md">
@@ -100,7 +134,7 @@
         
     </section>
     <section class="wellcome_area clearfix initial" id="services">
-        <nav class="navbar navbar-expand-sm navbar-light topNavbar">
+        <nav class="navbar navbar-expand navbar-light topNavbar">
             <div class="collapse navbar-collapse" id="navbarNav"> 
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
@@ -108,28 +142,14 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
-                    <li class="nav-item" onclick="generateTable()">
-                        <i class="material-icons nav-link">shopping_basket</i>
+                    <li class="nav-item" onclick="generateInvoice()">
+                        <label for="six">
+                            <i class="material-icons nav-link">shopping_basket</i>
+                        </label>
                     </li>
                 </ul>
             </div>
         </nav>
-        <!-- <main class="small">
-            <nav class="sticky">
-              <header class="cutout-bar">
-                radial gradient:<br> A+ works as i'd like, for circles
-                <div class="icon">hi</div>
-              </header>
-              <div class="button small">+</div>
-            </nav>
-            <section>
-              <div class="card"></div>
-              <div class="card"></div>
-              <div class="card"></div>
-              <div class="card"></div>
-              <div class="card"></div>
-            </section>
-          </main> -->
           <div class="cards-list">
   
             <div class="card 1">
@@ -158,8 +178,7 @@
               <div class="card4">
               <div class="card_title title-black">
               </div>
-              </div>
-            
+              </div>  
             </div>
     </section>
     <nav class="menu navbar-nav">
@@ -170,6 +189,7 @@
 		<input type="radio" name="menu" id="three">
 		<input type="radio" name="menu" id="four">
         <input type="radio" name="menu" id="five">
+        <input type="radio" name="menu" id="six">
 		<div class="list">
 			<div class="link-wrap">
 				<label for="one" onclick="generateHome()">
@@ -180,8 +200,7 @@
 					<i class="material-icons purpleicon">sentiment_very_satisfied</i>
 					<span>Customer Corner</span>
 				</label> 				
-                <label for="six">
-                </label> 
+                <label></label> 
                 <label for="four" onclick="generateInventory()">
 					<i class="material-icons purpleicon">list_alt</i>
 					<span>Inventory</span>
