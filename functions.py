@@ -10,6 +10,8 @@ from gtts import gTTS
 from nltk import word_tokenize
 import psycopg2
 import eel
+import googletrans
+from googletrans import Translator
 
 runtype = 'test' # test -> harcoded inputs
 #runtype = 'demo' # demo -> speech inputs
@@ -30,10 +32,30 @@ def inv_printer():
     conn,cur = db_connect()
     return item_printer(cur)
 
-def speak(audio):
-    engine = pyttsx3.init('sapi5') 
+def speak(audio,language="english"):
+
+    translator = Translator()
+    engine = pyttsx3.init() 
     voices = engine.getProperty('voices') 
-    engine.setProperty('voice', voices[1].id) 
+    if language=="english":
+        engine.setProperty('voice', voices[0].id)
+    elif language =="hindi":
+        for voice in voices:
+            if voice.languages[0] == u'hi_IN':
+                engine.setProperty('voice', voice.id)
+                break
+        result = translator.translate(audio, src='en', dest='hi')
+        audio=result.text
+
+    else:
+        for voice in voices:
+            if voice.languages[0] == u'es_ES':
+                engine.setProperty('voice', voice.id)
+                break
+        result = translator.translate(audio, src='en', dest='es')
+        audio=result.text
+        print(audio)    
+    
     engine.say(audio)
     engine.runAndWait()
     
@@ -399,3 +421,60 @@ def complete_voice(cur,conn,inp0):
 @eel.expose
 def newPage():
     eel.start('index.html', size=(540, 960))
+
+
+@eel.expose
+def productReturns():
+    inp_no = 'no'
+    inp_yes = 'yes'
+    conn,cur = db_connect()
+    eel.left_printer("Thank you for contacting us about your defective product.")
+    speak("Thank you for contacting us about your defective product")
+    eel.left_printer("We are extremely sorry for the inconvenience.")
+    speak("We are extremely sorry for the inconvenience.")
+    eel.left_printer("What do you want to return?")
+    speak("What do you want to return?")
+
+    inp_user="I did not like your pasta sauce"
+    eel.right_printer(inp_user)
+    query="SELECT row from customer_care order by row desc"
+    cur.execute(query)
+    rows = cur.fetchall()
+    new_entry = rows[0][0]+1
+    query = "INSERT INTO customer_care (cat_id,row,complain) \
+             VALUES (1,"+str(new_entry)+",'"+inp_user+"')"
+    cur.execute(query)
+    conn.commit()
+    eel.left_printer("Our sales team will get back to you as soon as possible ")
+    speak("Our sales team will get back to you as soon as possible ")
+
+@eel.expose
+def billingIssues():
+    inp_no = 'no'
+    inp_yes = 'yes'
+    conn,cur = db_connect()
+    eel.left_printer("We are extremely sorry for the inconvenience.")
+    speak("We are extremely sorry for the inconvenience")
+    eel.left_printer("What is your invoice number?")
+    speak("What is your invoice number?")
+    
+    eel.left_printer("Our sales team will get back to you as soon as possible")
+    speak("Our sales team will get back to you as soon as possible")
+
+    inp_user="I did not like your pasta sauce"
+    eel.right_printer(inp_user)
+    query="SELECT row from customer_care order by row desc"
+    cur.execute(query)
+    rows = cur.fetchall()
+    new_entry = rows[0][0]+1
+    query = "INSERT INTO customer_care (cat_id,row,complain) \
+             VALUES (2,"+str(new_entry)+",'"+inp_user+"')"
+    cur.execute(query)
+    conn.commit()
+    eel.left_printer("Our sales team will get back to you as soon as possible ")
+    speak("Our sales team will get back to you as soon as possible ")
+
+
+
+
+    
