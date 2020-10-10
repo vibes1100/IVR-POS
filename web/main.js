@@ -25,6 +25,34 @@ async function generateAssistant() {
 	// 	voicedots[i].classList.remove("active");
 	// }
 }
+async function generateproductReturns() {
+	hideAll();
+	document.getElementById("assistant").classList.add("activesec");
+	// for(i=0;i<voicedots.length;i++){
+	// 	voicedots[i].classList.toggle("active");
+	// }
+	togglevoicedots();
+	eel.productReturns();
+	// var x = await 
+	// eel.myCommand()(dispTable);
+	// for(i=0;i<voicedots.length;i++){
+	// 	voicedots[i].classList.remove("active");
+	// }
+}
+async function generateBillingIssues() {
+	hideAll();
+	document.getElementById("assistant").classList.add("activesec");
+	// for(i=0;i<voicedots.length;i++){
+	// 	voicedots[i].classList.toggle("active");
+	// }
+	togglevoicedots();
+	eel.billingIssues();
+	// var x = await 
+	// eel.myCommand()(dispTable);
+	// for(i=0;i<voicedots.length;i++){
+	// 	voicedots[i].classList.remove("active");
+	// }
+}
 async function generateServices() {
 	hideAll();
 	document.getElementById("services").classList.add("activesec");
@@ -39,6 +67,11 @@ async function generateInventory() {
 	document.getElementById("inventory").classList.add("activesec");
 	var data = document.getElementById("data").value;
 	eel.inv_printer()(dispStockTable);
+}
+
+async function generateMenu(){
+	hideAll();
+	document.getElementById("menu").classList.add("activesec");
 }
 
 function removeInitial(){

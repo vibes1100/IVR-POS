@@ -119,6 +119,44 @@
         <div id="stock">           
         </div>
     </section>
+    <!-- Aditi is making changes here Start--> 
+    <section class="wellcome_area clearfix initial" id="menu">
+        <nav class="navbar navbar-expand navbar-light topNavbar">
+            <div class="collapse navbar-collapse" id="navbarNav"> 
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <i class="material-icons nav-link">menu</i>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item" onclick="generateInvoice()">
+                        <label for="six">
+                            <i class="material-icons nav-link">shopping_basket</i>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+          <div class="cards-list">
+  
+            <div class="card 4">
+              <div class="card_image card_bg4">  </div>
+              <div class="card_title title-white">
+                <p>Language Preferences</p>
+              </div>
+            </div>
+
+            <div class="card 5">
+              <div class="card_image card_bg5">               
+                </div>
+              <div class="card_title title-white">
+                <p>Voice Preferences</p>
+              </div>
+            </div>
+        </section>
+            
+
+    <!-- Aditi is making changes here End--> 
 
     <section class="wellcome_area_assistant clearfix initial" id="assistant">
         <div class="row h-100 ">
@@ -152,7 +190,7 @@
         </nav>
           <div class="cards-list">
   
-            <div class="card 1">
+            <div class="card 1" onclick="generateproductReturns()">
               <div class="card_image card_bg1">  </div>
               <div class="card_title title-white">
                 <p>Product Returns</p>
@@ -181,37 +219,38 @@
               </div>  
             </div>
     </section>
+
     <nav class="menu navbar-nav">
         <label for="three" onclick="generateAssistant()">
         <div class="voicebutton small"><i class="material-icons">mic</i></div></label>
-		<input type="radio" name="menu" id="one" checked>
-		<input type="radio" name="menu" id="two">
-		<input type="radio" name="menu" id="three">
-		<input type="radio" name="menu" id="four">
+        <input type="radio" name="menu" id="one" checked>
+        <input type="radio" name="menu" id="two">
+        <input type="radio" name="menu" id="three">
+        <input type="radio" name="menu" id="four">
         <input type="radio" name="menu" id="five">
         <input type="radio" name="menu" id="six">
-		<div class="list">
-			<div class="link-wrap">
-				<label for="one" onclick="generateHome()">
-					<i class="material-icons purpleicon">home</i>
-					<span>Home</span>
-				</label>
-				<label for="two" onclick="generateServices()">
-					<i class="material-icons purpleicon">sentiment_very_satisfied</i>
-					<span>Customer Corner</span>
-				</label> 				
+        <div class="list">
+            <div class="link-wrap">
+                <label for="one" onclick="generateHome()">
+                    <i class="material-icons purpleicon">home</i>
+                    <span>Home</span>
+                </label>
+                <label for="two" onclick="generateServices()">
+                    <i class="material-icons purpleicon">sentiment_very_satisfied</i>
+                    <span>Customer Corner</span>
+                </label>                
                 <label></label> 
                 <label for="four" onclick="generateInventory()">
-					<i class="material-icons purpleicon">list_alt</i>
-					<span>Inventory</span>
-				</label>
-				<label for="five">
-					<i class="material-icons purpleicon">menu</i>
-					<span>Menu</span>
+                    <i class="material-icons purpleicon">list_alt</i>
+                    <span>Inventory</span>
+                </label>
+                <label for="five" onclick="generateMenu()">
+                    <i class="material-icons purpleicon">menu</i>
+                    <span>Menu</span>
                 </label>              
                 
-			</div>
-		</div>
+            </div>
+        </div>
     </nav>
 </body>
 <script type="text/javascript" src="/eel.js"></script>
