@@ -173,7 +173,7 @@ def item_selector(cur_pointer,p_id):
     # print('Item  |\t\n id  |\t','Item name',"\t|")
     # print("--------------------------")
     items = []
-    if len(rows) == 1 :
+    if len(rows) >= 1 :
         for row in rows : 
             items.append(row[2])
         text = "Avaiailable items under " + p_id + " are " + "<li>" + "<li>".join(items)
@@ -301,9 +301,20 @@ def invoice_generator(cur,user_buy,conn):
 
 #result = cur.executemany(sql_update_query, records_to_update)
 def invoice_printer(cur_pointer):
-    
-    cur_pointer.execute("SELECT invoice_id, item_name, coster, quantity, overall FROM invoice WHERE invoice_id = (SELECT invoice_id FROM invoice ORDER BY invoice_id DESC LIMIT 1)")
+    cur_pointer.execute("SELECT invoice_id, item_id, item_name, coster, quantity, overall FROM invoice WHERE invoice_id = (SELECT invoice_id FROM invoice ORDER BY invoice_id DESC LIMIT 1)")
     return printer(cur_pointer,1)
+
+@eel.expose
+def invoice_inc(value):
+    conn,cur = db_connect()
+    cur.execute("UPDATE invoice SET quantity=quantity+1, overall=overall+coster WHERE item_id =" +str(value)+ " and invoice_id = (SELECT invoice_id FROM invoice ORDER BY invoice_id DESC LIMIT 1)")
+    conn.commit()
+
+@eel.expose
+def invoice_dec(value):
+    conn,cur = db_connect()
+    cur.execute("UPDATE invoice SET quantity=quantity-1, overall=overall-coster WHERE item_id =" +str(value)+ " and invoice_id = (SELECT invoice_id FROM invoice ORDER BY invoice_id DESC LIMIT 1)")
+    conn.commit()
 
 @eel.expose
 def bill_amount():
@@ -404,6 +415,7 @@ def unknown_item(conn,cur,inp0='yes'):
                     speak("Would u like to add anything else ?")
                     eel.left_printer("Would u like to add anything else ?")
                     inp0 = myCommand("Anything else")
+                    eel.right_printer(inp0.capitalize())
                     #inp0 = inp_no
                     # inp0 = input()
                 
@@ -420,7 +432,7 @@ def unknown_item(conn,cur,inp0='yes'):
             unknown_item(conn,cur)
 
     invoice_generator(cur,user_buy,conn)
-
+    eel.left_printer("Ok, I have added your items into your cart")
 
 def unknown_item_voice(cur,conn):
     parent_category_speak(cur)

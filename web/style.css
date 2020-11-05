@@ -121,6 +121,7 @@ section.initial{
     font-weight: 500;
     color: #373737;
     font-size: 20px;
+    display: inline-table;
 }
 h2.sqldisp{
     font-family: 'Cabin',sans-serif;
@@ -129,6 +130,9 @@ h2.sqldisp{
     font-size: 30px;
     padding: 0px;
     border: 0px;
+}
+.sqldisp i{
+    color: #800080;
 }
 .wellcome_area {
     background-image: url(img/bg-img/welcome-bg.png);

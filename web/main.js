@@ -160,17 +160,21 @@ function removevoicedots(){
 }
 
 function dispInvoiceTable(table) {
-	var tablehtml ="<h2 class='sqldisp'>Invoice Number: "+table[0][0]+"</h2><table class='sqldisp'><tr><th>Name</th><th></th><th>Cost</th><th></th><th>Quantity</th><th></th><th>Total</th><th></th>";
+	var tablehtml ="<h2 class='sqldisp'>Invoice Number: "+table[0][0]+"</h2><table class='sqldisp'><tr><th>Name</th><th>Cost</th><th>Quantity</th><th>Total</th></tr>";
 	var i,j=0;
 	for(i=0;i<table.length;i++){
+		tablehtml+="<input type='hidden' value='"+table[i][1]+"' id='hiddenrow"+i+"'>"
 		if(i%2==0){
 			tablehtml+="<tr style='background: lavender'>";
 		}
 		else{
 			tablehtml+="<tr style='background: white'>"	;
 		}
-		for(j=1;j<table[i].length;j++){
-			tablehtml += "<td><pre>"+table[i][j]+"\t</pre><td>";
+		for(j=2;j<table[i].length;j++){
+			if(j==table[i].length-2)
+				tablehtml += "<td><pre><i class='fa fa-minus-circle fa-sm' aria-hidden='true' onclick='minusitem(this.id)' id='hiddenrow"+i+"'></i></pre><pre>   "+table[i][j]+"   </pre><pre><i class='fa fa-plus-circle fa-sm' aria-hidden='true' onclick='additem(this.id)' id='hiddenrow"+i+"'></i></pre></td>";
+			else
+				tablehtml += "<td><pre>"+table[i][j]+"\t</pre></td>";
 		}
 		tablehtml+="</tr>";
 	}
@@ -183,12 +187,24 @@ function dispInvoiceTable(table) {
 
 function dispInvoiceAmount(table) {
 	tablehtml = document.getElementById("test").innerHTML;
-	tablehtml+="<h2 class='sqldisp'>Total Price: <span>&#x20B9<span>"+table[0][0]+"</h2>";
+	tablehtml+="<h2 class='sqldisp' style='text-align:right'>Total Price: <span>&#x20B9<span>"+table[0][0]+"</h2>";
 	document.getElementById("test").innerHTML = tablehtml;
 }
 
+function additem(rowid){
+	var value=document.getElementById(rowid).value;
+	eel.invoice_inc(value);
+	generateInvoice();
+}
+
+function minusitem(rowid){
+	var value=document.getElementById(rowid).value;
+	eel.invoice_dec(value);
+	generateInvoice();
+}
+
 function dispStockTable(table) {
-	var tablehtml ="<table class='sqldisp'><tr><th>Product ID</th><th></th><th>Name</th><th></th><th>Cost</th><th></th><th>Stock Left</th><th></th>";
+	var tablehtml ="<table class='sqldisp'><tr><th>Product ID</th><th>Name</th><th>Cost</th><th>Stock Left</th>";
 	var i,j=0;
 	for(i=0;i<table.length;i++){
 		if(i%2==0){
@@ -201,7 +217,7 @@ function dispStockTable(table) {
 			if(j==1 || j==4){
 				continue;
 			}
-			tablehtml += "<td><pre>"+table[i][j]+"\t</pre><td>";
+			tablehtml += "<td><pre>"+table[i][j]+"\t</pre></td>";
 		}
 		tablehtml+="</tr>";
 	}
