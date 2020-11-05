@@ -305,6 +305,12 @@ def invoice_printer(cur_pointer):
     cur_pointer.execute("SELECT invoice_id, item_name, coster, quantity, overall FROM invoice WHERE invoice_id = (SELECT invoice_id FROM invoice ORDER BY invoice_id DESC LIMIT 1)")
     return printer(cur_pointer,1)
 
+@eel.expose
+def bill_amount():
+    conn,cur = db_connect()
+    cur.execute("SELECT SUM(overall) FROM invoice WHERE invoice_id = (SELECT invoice_id FROM invoice ORDER BY invoice_id DESC LIMIT 1)")
+    return printer(cur,0)
+
 def known_item_voice(cur):
     inp1='yes'
     user_buy = []

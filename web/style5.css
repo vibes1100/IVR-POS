@@ -1,241 +1,135 @@
-
-@use postcss-cssnext;
-
-/* config.css */
-
-:root {
-  --baseColor: #606468;
+.containerwish {
+  max-width: 450px;
+  margin: 0 auto;
+  border-top: 5px solid #435757;
+  background-color: rgba(255, 255, 255, .5);
+  box-shadow: 0 0 20px rgba(0, 0, 0, .1);
+  user-select: none;
+}
+  h1 {
+  margin: 0;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, .9);
+  font-size: 1.8em;
+  text-align: center;
 }
 
-/* helpers/align.css */
-h1{
-  font-family: 'Cabin', sans-serif;
-    font-weight: 1600;
-    color: #a869f5;
-    line-height: 1.2;
-    text-align: center;
-    font-size: 70px;
-}
-.align {
-  align-items: center;
+.items {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  padding: 20px;
+  counter-reset: done-items undone-items;
 }
 
-/* helpers/grid.css */
-
-:root {
-  --gridMaxWidth: 20rem;
-  --gridWidth: 90%;
+h2 {
+  position: relative;
+  margin: 0;
+  padding: 10px 0;
+  font-size: 14px;
 }
 
-.grid {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: var(--gridMaxWidth);
-  width: var(--gridWidth);
-}
-
-/* helpers/hidden.css */
-
-.hidden {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
+h2::before {
+  content: '';
+  display: block;
   position: absolute;
-  width: 1px;
+  top: 10px;
+  bottom: 10px;
+  left: -20px;
+  width: 5px;
+  background-color: #435757;
 }
 
-/* helpers/icon.css */
-
-:root {
-  --iconFill: var(--baseColor);
+h2::after {
+  display: block;
+  float: right;
+  font-weight: normal;
 }
 
-.icons {
-  display: none;
+.done {
+  order: 1;
 }
 
-.icon {
-  display: inline-block;
-  fill: var(--iconFill);
-  font-size: 1rem;
-  height: 1em;
-  vertical-align: middle;
-  width: 1em;
+.done::after {
+  content: ' (' counter(done-items) ')';
 }
 
-/* layout/base.css */
-
-:root {
-  --htmlFontSize: 100%;
-
-  --bodyBackgroundColor: white;
-  --bodyColor: var(--baseColor);
-  --bodyFontFamily: 'Open Sans';
-  --bodyFontFamilyFallback: sans-serif;
-  --bodyFontSize: 0.875rem;
-  --bodyFontWeight: 400;
-  --bodyLineHeight: 1.5;
+.undone {
+  order: 3;
 }
 
-* {
-  box-sizing: inherit;
+.undone::after {
+  content: ' (' counter(undone-items) ')';
 }
 
-html {
-  box-sizing: border-box;
-  font-size: var(--htmlFontSize);
-  height: 100%;
+/* hide inputs offscreen, but at the same vertical positions as the correpsonding labels, so that tabbing scrolls the viewport as expected */
+.tasks {
+  display: block;
+  height: 53px;
+  margin: 0 0 -53px -9999px;
+  order: 4;
+  outline: none;
+  counter-increment: undone-items;
 }
 
-body {
-  background-color: var(--bodyBackgroundColor);
-  color: var(--bodyColor);
-  font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback);
-  font-size: var(--bodyFontSize);
-  font-weight: var(--bodyFontWeight);
-  height: 100%;
-  line-height: var(--bodyLineHeight);
-  margin: 0;
-  min-height: 100vh;
+.tasks:checked {
+  order: 2;
+  counter-increment: done-items;  
 }
 
-/* modules/anchor.css */
-
-:root {
-  --anchorColor: #d44179;
-}
-
-a {
-  color: var(--anchorColor);
-  outline: 0;
-  text-decoration: none;
-}
-
-a:focus,
-a:hover {
-  text-decoration: underline;
-}
-
-/* modules/form.css */
-
-:root {
-  --formFieldMargin: 0.875rem;
-}
-
-input {
-  background-image: none;
-  border: 0;
-  color: inherit;
-  font: inherit;
-  margin: 0;
-  outline: 0;
-  padding: 0;
-  transition: background-color 0.3s;
-}
-
-input[type='submit'] {
+label.wishlistitem{
+  color: #373737;
+  display: block;
+  position: relative;
+  padding: 9px 0 15px 45px;
+  border-top: 1px solid #373737;
+  order: 4;
   cursor: pointer;
+  animation: undone .5s;
+  font: 20px 'Cabin';
 }
 
-.form {
-  margin: calc(var(--formFieldMargin) * -1);
+label.wishlistitem::before {
+  content: '\f10c'; /* circle outline */
+  display: block;
+  position: absolute;
+  top: 11px;
+  left: 10px;
+  font: 1.0em 'FontAwesome';
 }
 
-.form input[type='password'],
-.form input[type='text'],
-.form input[type='submit'] {
-  width: 100%;
+label.wishlistitem:hover, .tasks:focus + label.wishlistitem {
+  background-color: rgba(255, 255, 255, .2);
 }
 
-.form__field {
-  display: flex;
-  margin: var(--formFieldMargin);
+.tasks:checked + label.wishlistitem {
+  order: 2;
+  animation: done .5s;
 }
 
-.form__input {
-  flex: 1;
+.tasks:checked + label.wishlistitem::before {
+  content: '\f058'; /* circle checkmark */
 }
 
-/* modules/login.css */
-
-:root {
-  --loginBorderRadus: 2.0rem;
-  --loginColor: #a869f5;
-
-  --loginInputBackgroundColor: #b796d9;
-  --loginInputHoverBackgroundColor: #d9c2f0;
-
-  --loginLabelBackgroundColor: #d7bff5;
-
-  --loginSubmitBackgroundColor: #6d58d6;
-  --loginSubmitColor: #a869f5;
-  --loginSubmitHoverBackgroundColor: #d44179;
+@keyframes done {
+  0% {
+    opacity: 0;
+    background-color: rgba(255, 255, 255, .4);
+    transform: translateY(20px);
+  }
+  50% {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, .4);
+  }
 }
 
-.login {
-  color: var(--loginColor);
-}
-
-.login label,
-.login input[type='text'],
-.login input[type='password'],
-.login input[type='submit'] {
-  border-radius: var(--loginBorderRadus);
-  padding: 1rem;
-}
-
-.login label {
-  background-color: var(--loginLabelBackgroundColor);
-  border-bottom-right-radius: 0;
-  border-top-right-radius: 0;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
-}
-
-.login input[type='password'],
-.login input[type='text'] {
-  background-color: var(--loginInputBackgroundColor);
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0;
-}
-
-.login input[type='password']:focus,
-.login input[type='password']:hover,
-.login input[type='text']:focus,
-.login input[type='text']:hover {
-  background-color: var(--loginInputHoverBackgroundColor);
-}
-
-.login input[type='submit'] {
-  background-color: var(--loginSubmitBackgroundColor);
-  color: var(--loginSubmitColor);
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.login input[type='submit']:focus,
-.login input[type='submit']:hover {
-  background-color: var(--loginSubmitHoverBackgroundColor);
-}
-
-/* modules/text.css */
-
-:root {
-  --paragraphMarginBottom: 1.5rem;
-  --paragraphMarginTop: 1.5rem;
-}
-
-p {
-  margin-bottom: var(--paragraphMarginBottom);
-  margin-top: var(--paragraphMarginTop);
-}
-
-.text--center {
-  text-align: center;
+@keyframes undone {
+  0% {
+    opacity: 0;
+    background-color: rgba(255, 255, 255, .4);
+    transform: translateY(-20px);
+  }
+  50% {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, .4);
+  }
 }

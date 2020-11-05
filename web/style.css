@@ -125,8 +125,8 @@ section.initial{
 h2.sqldisp{
     font-family: 'Cabin',sans-serif;
     font-weight: 500;
-    color: black;
-    font-size: 40px;
+    color: #373737;
+    font-size: 30px;
     padding: 0px;
     border: 0px;
 }
@@ -201,7 +201,7 @@ h2.sqldisp{
     border-radius: 30px;
 }
 
-.get-start-area .submit {
+.submit {
     background-color: #fb397d;
     color: #fff;
     font-weight: 500;
@@ -215,12 +215,28 @@ h2.sqldisp{
     margin-left: 10px;
 }
 
-.get-start-area .submit:hover {
+.submit:hover {
     background: #6f52e5;
     color: #fff;
     -webkit-transition-duration: 500ms;
     -o-transition-duration: 500ms;
     transition-duration: 500ms;
+}
+
+.submit2 {
+    float: right;
+    background-color: #fb397d;
+    color: #fff;
+    font-weight: 500;
+    display: inline-block;
+    border: none;
+    height: 50px;
+    width: 50px;
+    line-height: 46px;
+    text-align: center;
+    border-radius: 50px;
+    margin-right: 20px;
+    margin-top: -20px;
 }
 
 .wellcome-heading > p {

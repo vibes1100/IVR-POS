@@ -2,7 +2,6 @@
 body{
 	margin: 0 auto;
 	color: #373737;
-	font: 'Open Sans', sans-serif;
 }
 *,:after,:before{box-sizing:border-box}
 .clearfix:after,.clearfix:before{content:'';display:table}

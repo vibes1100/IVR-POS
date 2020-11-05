@@ -9,6 +9,7 @@ async function generateInvoice() {
 	document.getElementById("displaycart").classList.add("activesec");
 	var data = document.getElementById("data").value;
 	eel.basket_printer()(dispInvoiceTable);
+	eel.bill_amount()(dispInvoiceAmount);
 }
 
 async function generateAssistant() {
@@ -25,6 +26,30 @@ async function generateAssistant() {
 	// 	voicedots[i].classList.remove("active");
 	// }
 }
+
+async function generateWishList(){
+	hideAll();
+	document.getElementById("wishlist").classList.add("activesec");
+
+}
+
+async function insertWishlist(){
+    wishlist=document.getElementById("wishlist");
+    count=wishlist.getElementsByTagName('input').length;
+    count=count+1
+    newItem = document.createElement("input");
+    newItem.id="item"+count
+	newItem.setAttribute("type", "checkbox");
+	newItem.setAttribute("class", "tasks");
+    newLabel=document.createElement("label");
+	newLabel.setAttribute("for", newItem.id);
+	newLabel.setAttribute("class", "wishlistitem");
+	newLabel.innerHTML="Take input from user"
+	wishlistinsert=document.getElementById("wishlistinsert");
+	wishlistinsert.parentNode.insertBefore(newItem, wishlistinsert);
+	wishlistinsert.parentNode.insertBefore(newLabel, wishlistinsert);
+}
+
 async function generateproductReturns() {
 	hideAll();
 	document.getElementById("assistant").classList.add("activesec");
@@ -154,6 +179,12 @@ function dispInvoiceTable(table) {
 	// var voicedots = document.getElementsByClassName("voicedot")
 	// for(i=0;i<voicedots.length;i++){
 	// 	voicedots[i].classList.remove("active");}
+}
+
+function dispInvoiceAmount(table) {
+	tablehtml = document.getElementById("test").innerHTML;
+	tablehtml+="<h2 class='sqldisp'>Total Price: <span>&#x20B9<span>"+table[0][0]+"</h2>";
+	document.getElementById("test").innerHTML = tablehtml;
 }
 
 function dispStockTable(table) {
