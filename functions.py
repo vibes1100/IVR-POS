@@ -210,7 +210,10 @@ def item_printer(cur_pointer):
     print("--------------------------")
     for row in rows : 
         print(row[0],'   |',row[2],"\t|")
-    return rows
+        x.append(row[2])
+    x = "<li>" + "<li>".join(x)
+
+    return x
     
 
 def stopword_remover(text):
@@ -349,7 +352,8 @@ def known_item_voice(cur):
 def known_item(conn,cur,inp0='yes'):
     
     speak("Please check the screen to view all the items")
-    x = "Available items are : \n" + item_printer(cur)
+    x = item_printer(cur)
+    x = "Available items are : \n" + x
     eel.left_printer(x)
     
     user_buy = []
@@ -394,7 +398,7 @@ def unknown_item(conn,cur,inp0='yes'):
         eel.right_printer(inp1.capitalize())
         x = child_category_selector(cur,inp1.capitalize())
         
-        if x== 1 : 
+        if x == 1 : 
             # inp2 = 'bread'
             inp2 = myCommand("Select a subcategory")
             eel.right_printer(inp2.capitalize())
@@ -433,6 +437,7 @@ def unknown_item(conn,cur,inp0='yes'):
 
     invoice_generator(cur,user_buy,conn)
     eel.left_printer("Ok, I have added your items into your cart")
+    return None
 
 def unknown_item_voice(cur,conn):
     parent_category_speak(cur)
