@@ -26,6 +26,7 @@
           Create an account to experience the newest Shopping Trend!
           Your account will give you access to the full suite of services we have on offer.
         </p>
+
         <input type="button" id="signup" class="form-button" value="Create Account">
       </div>
       <div class="overlay" id="slide">
@@ -35,23 +36,23 @@
             <div class="social-container">
               <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
               <a href="#" class="social"
-                ><i class="fab fa-google-plus-g"></i
-              ></a>
+                ><i class="fab fa-google-plus-g"></i></a>
               <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
             </div>
             <div class="input-container">
-              <input type="text" placeholder="Email" />
+              <input type="text" placeholder="Email" name="email"/>
             </div>
             <div class="input-container">
-              <input type="text" placeholder="Password" />
+              <input type="text" placeholder="New Username" name="username"/>
             </div>
             <div class="input-container">
-              <input type="text" placeholder="Confirm Password" />
+              <input type="password" placeholder="Password" name="signpassword"/>
+            </div>
+            <div class="input-container">
+              <input type="password" placeholder="Confirm Password" name="confirmsignpassword"/>
             </div>
 
-            <button class="form-button">
-              Create Account
-            </button>
+            <button class="form-button" type="button" onclick="signupcheck(this.form)">Create Account</button>
           </form>
         </div>
 
@@ -61,8 +62,7 @@
             <div class="social-container">
               <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
               <a href="#" class="social"
-                ><i class="fab fa-google-plus-g"></i
-              ></a>
+                ><i class="fab fa-google-plus-g"></i></a>
               <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
             </div>
             <div class="input-container">

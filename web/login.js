@@ -31,4 +31,22 @@ function check(form)/*function to check userid & password*/
    alert("Invalid Credentials, Please try again")/*displays error message*/
   }
 }
+function signupcheck(form)
+{ 
+  if(form.confirmsignpassword.value==form.signpassword.value && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(form.email.value))
+  {
+    eel.functionName(username,signpassword)
+    generateNewPage()
+  }
+  else if(form.confirmsignpassword.value==form.signpassword.value)
+  {
+    alert("You have entered an invalid email address!")
+  }
+  else if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(form.email.value))
+  {
+    alert("Your passwords do not match")
+       
+  }
+  
+}
 
