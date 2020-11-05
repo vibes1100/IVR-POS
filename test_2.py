@@ -14,28 +14,13 @@ from gtts       import gTTS
 from nltk       import word_tokenize
 from functions  import *
 
-runtype = 'test' # test -> harcoded inputs
-#runtype = 'demo' # demo -> speech inputs
-
 inp_yes = 'yes'
 inp_no = 'no'
 stop_words = ['i','want','to','order','and','some','would',\
     'like','go','visit','view']
 
 eel.init('web')
-
-# engine = pyttsx3.init('sapi5') 
-# voices = engine.getProperty('voices') 
-# engine.setProperty('voice', voices[1].id)
-# #inp0 = myCommand("Anythong else") 
-    
-#########ONLY FOR TESTING!######
-##########SAME AS THE TRY BLOCK AFTER THIS######################
-
-###########DELETE ME^###########
-################################
-            
-            
+                       
 try:
     conn = psycopg2.connect(database="IVR_POS", user="postgres", password="hi", host="127.0.0.1", port="5432")
 
@@ -54,8 +39,8 @@ try:
     if inp0 == inp_yes:
 
         speak("Do u know exactly what u want to buy ?")
-        #inp0 = myCommand("Do u know exactly what u want to buy ?")
-        inp0 = inp_no
+        inp0 = myCommand("Do u know exactly what u want to buy ?")
+        # inp0 = inp_no 
         print(inp0)
  
         complete_voice(cur,conn,inp0)

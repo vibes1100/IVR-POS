@@ -6,15 +6,14 @@ Created on Fri Jul 17 12:12:51 2020
 """
 import speech_recognition as sr
 import pyttsx3
-from gtts import gTTS
-from nltk import word_tokenize
 import psycopg2
 import eel
 import googletrans
-from googletrans import Translator
 
-runtype = 'test' # test -> harcoded inputs
-#runtype = 'demo' # demo -> speech inputs
+from    gtts        import gTTS
+from    nltk        import word_tokenize
+from    googletrans import Translator
+
 
 def db_connect():
     conn = psycopg2.connect(database="IVR_POS", user="postgres", password="hi", host="127.0.0.1", port="5432")
@@ -124,7 +123,8 @@ def parent_category_selector(cur_pointer):
     text = "Available categories are " + "<li>" + "<li>".join(cat)
     eel.left_printer(text)
     speak("U can view the available categories on the screen")
-    return printer(cur_pointer,1)
+    return 
+    printer(cur_pointer,1)
 
 def parent_category_speak(cur):
     z=[]
@@ -142,13 +142,17 @@ def child_category_selector(cur_pointer,p_id):
     query = str("SELECT category_id, category_name FROM category_table WHERE parent_id IN (SELECT parent_id FROM category_table WHERE category_name ='" + str(p_id)+"') AND parent_id!=category_id")
     cur_pointer.execute(query)
     rows = cur_pointer.fetchall()
-    sub_cat = [] 
-    for row in rows:
-        sub_cat.append(row[1])
-    text = 'Available subcategories are ' + "<li>" + "<li>".join(sub_cat)
-    eel.left_printer(text)
-    speak("Please check your screen for the Available sub-categories")
-    printer(cur_pointer,2)
+    if len(rows) >=1 : 
+        sub_cat = [] 
+        for row in rows:
+            sub_cat.append(row[1])
+        text = 'Available subcategories are ' + "<li>" + "<li>".join(sub_cat)
+        eel.left_printer(text)
+        speak("Please check your screen for the Available sub-categories")
+        printer(cur_pointer,2)
+        return 1
+    else : 
+        return -1
 
 def child_category_speak(cur,p_id):
     z=[]
@@ -169,13 +173,16 @@ def item_selector(cur_pointer,p_id):
     # print('Item  |\t\n id  |\t','Item name',"\t|")
     # print("--------------------------")
     items = []
-    for row in rows : 
-        items.append(row[2])
-    text = "Avaiailable items under " + p_id + " are " + "<li>" + "<li>".join(items)
-    eel.left_printer(text)
-    speak("Please choose from the items mentioned on the screen")
-    return(rows)
-    #printer(cur_pointer,3)
+    if len(rows) == 1 :
+        for row in rows : 
+            items.append(row[2])
+        text = "Avaiailable items under " + p_id + " are " + "<li>" + "<li>".join(items)
+        eel.left_printer(text)
+        speak("Please choose from the items mentioned on the screen")
+        return 1
+    
+    else : 
+        return -1
     
 def item_speaker(cur,p_id):
     query = "SELECT * FROM items WHERE category_id IN (SELECT category_id FROM category_table WHERE category_name ='"  + p_id + "')"
@@ -230,11 +237,18 @@ def db_searcher(att,cur_pointer,quantt):
     query = "SELECT * FROM items WHERE item_attributes LIKE " + x
     cur_pointer.execute(query)
     rows = cur_pointer.fetchall()
-    for row in rows : 
-        #y.append(row[0])
-        y.append([row[0],row[2],row[3],quantt,row[3]*quantt,row[5]])
-    return y
-    #r = 
+
+    if len(rows)>=1 : 
+        for row in rows : 
+            #y.append(row[0])
+            y.append([row[0],row[2],row[3],quantt,row[3]*quantt,row[5]])
+        return y
+
+    else :
+        speak("Sorry the item you have ordered is currently not available please try another item")
+        print("Sorry the item you have ordered is currently not available")
+        return -1
+        
     printer(cur_pointer,3,quantt)
 
     #return r
@@ -260,6 +274,7 @@ def stock_update(conn,cur,records_to_update):
     print(cur.rowcount, "Record updated successfully into stock")
 
 def invoice_generator(cur,user_buy,conn):
+    
     query = "SELECT nextval('invoice_seq')"
     cur.execute(query)
     rows = cur.fetchall()
@@ -294,18 +309,25 @@ def known_item_voice(cur):
     inp1='yes'
     user_buy = []
     while(inp1 == 'yes'):
-        inp1 = 'britannia milk bread'
-        #inp1 = myCommand("Item name")
+        speak
+        # inp1 = 'britannia milk bread'
+        inp1 = myCommand("Item name")
         inp1 = word_tokenize(inp1)
         
         quantt = 6
         #quantt = myCommand("Item quant")
-        user_buy.append(db_searcher(inp1,cur,quantt))
-        print(user_buy)
-        speak("Anything else ?")
-        inp1 = input("Enter yes/no")
-        #inp1 = myCommand("Yes/no")
-    return user_buy
+        if db_searcher(inp1, cur, quantt) != -1: 
+            user_buy.append(db_searcher(inp1,cur,quantt))
+            print(user_buy)
+            speak("Anything else ?")
+            inp1 = input("Enter yes/no")
+            #inp1 = myCommand("Yes/no")
+
+        else : 
+            known_item_voice(cur)
+            print("")
+
+        return user_buy
 
 def known_item(conn,cur,inp0='yes'):
     
@@ -328,15 +350,19 @@ def known_item(conn,cur,inp0='yes'):
         #quant = myCommand("How much")
         eel.right_printer(quant)
             
-        user_buy.append(db_searcher(inp1,cur,quant))
+        if db_searcher(inp1,cur,quant)!= -1:
+            user_buy.append(db_searcher(inp1,cur,quant))
             
-        speak("Would u like to add anything else ?")
-        eel.left_printer("Would u like to add anything else ?")
-        #inp0 = myCommand("Anything else")
-        #inp0 = inp_no
-        inp0 = input()
+            speak("Would u like to add anything else ?")
+            eel.left_printer("Would u like to add anything else ?")
+            #inp0 = myCommand("Anything else")
+            #inp0 = inp_no
+            inp0 = input()
     
-    invoice_generator(cur,user_buy,conn)
+        else : 
+            known_item(conn,cur)
+
+        invoice_generator(cur,user_buy,conn)
 
 def unknown_item(conn,cur,inp0='yes'):
 
@@ -346,31 +372,46 @@ def unknown_item(conn,cur,inp0='yes'):
 
         parent_category_selector(cur)
             
-        inp1 = 'Bakery'
-        #inp1 = myCommand("Select a category")
-        eel.right_printer(inp1)
-        child_category_selector(cur,inp1)
-            
-        inp2 = 'Bread'
-        #inp2 = myCommand("Select a subcategory")
-        eel.right_printer(inp2)
-        item_selector(cur,inp2)
-
-        inp3 = 'i want britannia milk bread'
-        #inp3 = myCommand("Item name")
-        eel.right_printer(inp3.capitalize())
-        inp3 = stopword_remover(inp3)
-        eel.left_printer("How much")
-        quant = 1
-        #quant = myCommand("Enter quantity")
-        eel.right_printer(quant)
-        user_buy.append(db_searcher(inp3,cur,quant))
+        # inp1 = 'Bakery'
+        inp1 = myCommand("Select a category")
+        eel.right_printer(inp1.capitalize())
+        x = child_category_selector(cur,inp1.capitalize())
         
-        speak("Would u like to add anything else ?")
-        eel.left_printer("Would u like to add anything else ?")
-        #inp0 = myCommand("Anything else")
-        #inp0 = inp_no
-        inp0 = input()
+        if x== 1 : 
+            # inp2 = 'bread'
+            inp2 = myCommand("Select a subcategory")
+            eel.right_printer(inp2.capitalize())
+            item = item_selector(cur,inp2.capitalize())
+            
+            if item == 1 : 
+                inp3 = 'i want britannia milk bread'
+                #inp3 = myCommand("Item name")
+                eel.right_printer(inp3.capitalize())
+                inp3 = stopword_remover(inp3)
+                eel.left_printer("How much")
+                quant = 1
+                #quant = myCommand("Enter quantity")
+                eel.right_printer(quant)
+                
+                if db_searcher(inp3,cur,quant) != -1: 
+                    user_buy.append(db_searcher(inp3,cur,quant))
+                    speak("Would u like to add anything else ?")
+                    eel.left_printer("Would u like to add anything else ?")
+                    inp0 = myCommand("Anything else")
+                    #inp0 = inp_no
+                    # inp0 = input()
+                
+                else : 
+                    unknown_item(conn,cur)
+            
+            else :
+                speak("Wrong input for sub category selector")
+                unknown_item(conn,cur)
+
+        else : 
+            speak("Sorry the category you have chosen is not available")
+            eel.left_printer("Sorry the category you have chosen is not available")
+            unknown_item(conn,cur)
 
     invoice_generator(cur,user_buy,conn)
 
@@ -378,13 +419,13 @@ def unknown_item(conn,cur,inp0='yes'):
 def unknown_item_voice(cur,conn):
     parent_category_speak(cur)
             
-    inp1 = 'Bakery'
-    #inp1 = myCommand("Which category")
-    child_category_speak(cur,inp1)
+    # inp1 = 'Bakery'
+    inp1 = myCommand("Which category")
+    child_category_speak(cur,inp1.capitalize())
 
-    inp1 = 'Bread'
-    #inp1 = myCommand("Which sub_category")
-    item_speaker(cur,inp1)
+    # inp1 = 'Bread'
+    inp1 = myCommand("Which sub_category")
+    item_speaker(cur,inp1.capitalize())
             
     user_buy = known_item_voice(cur)
     invoice_generator(cur,user_buy,conn)
@@ -397,10 +438,7 @@ def tryblock():
     eel.left_printer("Do you know exactly what you want to buy?")
     speak("Do u know exactly what u want to buy ?")
 
-    if runtype == 'test' : 
-        inp0 = inp_no
-    else : 
-        inp0 = myCommand("Do u know exactly what u want to buy ?")
+    inp0 = myCommand("Do u know exactly what u want to buy ?")
 
     eel.right_printer(inp0.capitalize())
 
@@ -473,8 +511,3 @@ def billingIssues():
     conn.commit()
     eel.left_printer("Our sales team will get back to you as soon as possible ")
     speak("Our sales team will get back to you as soon as possible ")
-
-
-
-
-    
