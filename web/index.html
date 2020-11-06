@@ -18,13 +18,39 @@
 </head>
 
 <body onload="initialDisp()">
+        <div class="mobile-nav hide">
+           <nav class="navbar navbar-expand navbar-light topNavbar">
+                <div class="collapse navbar-collapse" id="navbarNav"> 
+                    <ul class="navbar-nav mr-auto" onclick="hamburger()">
+                        <li class="nav-item">
+                            <label for="seven">
+                            <i class="material-icons nav-link hamburgerarrow hideicon whiteicon">arrow_back</i>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+          </nav>
+          <div class="navi">
+          <ul>
+            <li onclick="generateWishlist()">your wishlist</li>
+            <li>offers</li>
+            <li>about us</li>
+            <li>contact</li>
+          </ul>
+        </div>
+        </div>
+        <div class="mobile-nav-overlay hide">
+         <div class="naviright whiteicon">
+             <i class="far fa-user"></i><p>Welcome, User!</p>
+         </div>
+         </div>
     <section class="wellcome_area_assistant clearfix" id="home">
             <nav class="navbar navbar-expand navbar-light topNavbar">
                 <div class="collapse navbar-collapse" id="navbarNav"> 
-                    <ul class="navbar-nav mr-auto" onclick ="generateWishList()">
+                    <ul class="navbar-nav mr-auto" onclick="hamburger()">
                         <li class="nav-item">
                             <label for="seven">
-                            <i class="material-icons nav-link">menu</i>
+                            <i class="material-icons nav-link hamburgermenu shown">menu</i>
                             </label>
                         </li>
                     </ul>
@@ -59,11 +85,9 @@
     <section class="wellcome_area clearfix initial" id="displaycart">
         <nav class="navbar navbar-expand navbar-light topNavbar">
             <div class="collapse navbar-collapse" id="navbarNav"> 
-                <ul class="navbar-nav mr-auto" onclick ="generateWishList()">
-                    <li class="nav-item">
-                        <label for="seven">
-                        <i class="material-icons nav-link">menu</i>
-                        </label>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item" onclick="generateHome()">
+                        <i class="material-icons nav-link">arrow_back</i> 
                     </li>
                 </ul>
                 <!-- <ul class="navbar-nav">
@@ -94,10 +118,10 @@
     <section class="wellcome_area clearfix initial" id="inventory">
         <nav class="navbar navbar-expand navbar-light topNavbar">
             <div class="collapse navbar-collapse" id="navbarNav"> 
-                <ul class="navbar-nav mr-auto" onclick ="generateWishList()">
+                <ul class="navbar-nav mr-auto" onclick="hamburger()">
                     <li class="nav-item">
                         <label for="seven">
-                        <i class="material-icons nav-link">menu</i>
+                        <i class="material-icons nav-link hamburgermenu shown">menu</i>
                         </label>
                     </li>
                 </ul>
@@ -129,10 +153,10 @@
     <section class="wellcome_area clearfix initial" id="menu">
         <nav class="navbar navbar-expand navbar-light topNavbar">
             <div class="collapse navbar-collapse" id="navbarNav"> 
-                <ul class="navbar-nav mr-auto" onclick ="generateWishList()">
+                <ul class="navbar-nav mr-auto" onclick="hamburger()">
                     <li class="nav-item">
                         <label for="seven">
-                        <i class="material-icons nav-link">menu</i>
+                        <i class="material-icons nav-link hamburgermenu shown">menu</i>
                         </label>
                     </li>
                 </ul>
@@ -184,10 +208,10 @@
     <section class="wellcome_area clearfix initial" id="wishlist">
         <nav class="navbar navbar-expand navbar-light topNavbar">
             <div class="collapse navbar-collapse" id="navbarNav"> 
-                <ul class="navbar-nav mr-auto" onclick ="generateWishList()">
+                <ul class="navbar-nav mr-auto" onclick="hamburger()">
                     <li class="nav-item">
                         <label for="seven">
-                        <i class="material-icons nav-link">menu</i>
+                        <i class="material-icons nav-link hamburgermenu shown">menu</i>
                         </label>
                     </li>
                 </ul>
@@ -220,25 +244,16 @@
         <div class="items" id="wishlist">
 
           <input class="tasks" id="item1" type="checkbox" checked>
-          <label class="wishlistitem" for="item1">Create a to-do list</label>
+          <label class="wishlistitem" for="item1">Britannia Milk Bread</label>
       
-          <input class="tasks" id="item2" type="checkbox" checked>
-          <label class="wishlistitem" for="item2">Take down Christmas tree</label>
+          <input class="tasks" id="item2" type="checkbox">
+          <label class="wishlistitem" for="item2">Cadbury Dairy Milk</label>
       
           <input class="tasks" id="item3" type="checkbox">
-          <label class="wishlistitem" for="item3">Learn Ember.js</label>
-      
-          <input class="tasks" id="item4" type="checkbox">
-          <label class="wishlistitem" for="item4">Binge watch every episode of MacGyver</label>
-      
-          <input class="tasks" id="item5" type="checkbox">
-          <label class="wishlistitem" for="item5">Alphabetize everything in the fridge</label>
-      
-          <input class="tasks" id="item6" type="checkbox">
-          <label class="wishlistitem" for="item6">Do 10 pull-ups without dropping</label>
+          <label class="wishlistitem" for="item3">Bananas</label>
           
-          <h3 class="done" id="wishlistinsert" aria-hidden="true">Wishlisted</h2>
-          <h3 class="undone" aria-hidden="true">Purchased</h2>
+          <h3 class="done" id="wishlistinsert" aria-hidden="true">Purchased</h2>
+          <h3 class="undone" aria-hidden="true">Wishlisted</h2>
         
         </div>
       </div>
@@ -251,10 +266,10 @@
     <section class="wellcome_area clearfix initial" id="services">
         <nav class="navbar navbar-expand navbar-light topNavbar">
             <div class="collapse navbar-collapse" id="navbarNav"> 
-                <ul class="navbar-nav mr-auto" onclick ="generateWishList()">
+                <ul class="navbar-nav mr-auto" onclick="hamburger()">
                     <li class="nav-item">
                         <label for="seven">
-                        <i class="material-icons nav-link">menu</i>
+                        <i class="material-icons nav-link hamburgermenu shown">menu</i>
                         </label>
                     </li>
                 </ul>

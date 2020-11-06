@@ -213,7 +213,8 @@ def item_printer(cur_pointer):
         x.append(row[2])
     x = "<li>" + "<li>".join(x)
 
-    return x
+    #return x
+    return rows
     
 
 def stopword_remover(text):
@@ -311,12 +312,14 @@ def invoice_printer(cur_pointer):
 def invoice_inc(value):
     conn,cur = db_connect()
     cur.execute("UPDATE invoice SET quantity=quantity+1, overall=overall+coster WHERE item_id =" +str(value)+ " and invoice_id = (SELECT invoice_id FROM invoice ORDER BY invoice_id DESC LIMIT 1)")
+    cur.execute("UPDATE items SET stock=stock-1 WHERE item_id =" +str(value))
     conn.commit()
 
 @eel.expose
 def invoice_dec(value):
     conn,cur = db_connect()
     cur.execute("UPDATE invoice SET quantity=quantity-1, overall=overall-coster WHERE item_id =" +str(value)+ " and invoice_id = (SELECT invoice_id FROM invoice ORDER BY invoice_id DESC LIMIT 1)")
+    cur.execute("UPDATE items SET stock=stock+1 WHERE item_id =" +str(value))
     conn.commit()
 
 @eel.expose
@@ -508,6 +511,7 @@ def productReturns():
     conn.commit()
     eel.left_printer("Our sales team will get back to you as soon as possible ")
     speak("Our sales team will get back to you as soon as possible ")
+    eel.removevoicedots()
 
 @eel.expose
 def billingIssues():

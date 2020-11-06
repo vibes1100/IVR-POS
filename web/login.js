@@ -35,7 +35,6 @@ function signupcheck(form)
 { 
   if(form.confirmsignpassword.value==form.signpassword.value && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(form.email.value))
   {
-    eel.functionName(username,signpassword)
     generateNewPage()
   }
   else if(form.confirmsignpassword.value==form.signpassword.value)
@@ -49,4 +48,6 @@ function signupcheck(form)
   }
   
 }
+
+
 

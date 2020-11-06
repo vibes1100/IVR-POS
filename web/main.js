@@ -7,7 +7,6 @@ async function generateInvoice() {
 	document.getElementById("test").innerHTML = "";
 	hideAll();
 	document.getElementById("displaycart").classList.add("activesec");
-	var data = document.getElementById("data").value;
 	eel.basket_printer()(dispInvoiceTable);
 	eel.bill_amount()(dispInvoiceAmount);
 }
@@ -27,7 +26,8 @@ async function generateAssistant() {
 	// }
 }
 
-async function generateWishList(){
+async function generateWishlist(){
+	hamburger();
 	hideAll();
 	document.getElementById("wishlist").classList.add("activesec");
 
@@ -44,7 +44,7 @@ async function insertWishlist(){
     newLabel=document.createElement("label");
 	newLabel.setAttribute("for", newItem.id);
 	newLabel.setAttribute("class", "wishlistitem");
-	newLabel.innerHTML="Take input from user"
+	newLabel.innerHTML=await eel.myCommand("Wishlist Item?")();
 	wishlistinsert=document.getElementById("wishlistinsert");
 	wishlistinsert.parentNode.insertBefore(newItem, wishlistinsert);
 	wishlistinsert.parentNode.insertBefore(newLabel, wishlistinsert);
@@ -90,7 +90,6 @@ async function generateServices() {
 async function generateInventory() {
 	hideAll();
 	document.getElementById("inventory").classList.add("activesec");
-	var data = document.getElementById("data").value;
 	eel.inv_printer()(dispStockTable);
 }
 
@@ -159,6 +158,12 @@ function removevoicedots(){
 	}
 }
 
+// function askPython(param){
+// 	var x = await eel.myCommand(param);
+// 	alert(x);
+// 	return x;
+// }
+
 function dispInvoiceTable(table) {
 	var tablehtml ="<h2 class='sqldisp'>Invoice Number: "+table[0][0]+"</h2><table class='sqldisp'><tr><th>Name</th><th>Cost</th><th>Quantity</th><th>Total</th></tr>";
 	var i,j=0;
@@ -172,7 +177,7 @@ function dispInvoiceTable(table) {
 		}
 		for(j=2;j<table[i].length;j++){
 			if(j==table[i].length-2)
-				tablehtml += "<td><pre><i class='fa fa-minus-circle fa-sm' aria-hidden='true' onclick='minusitem(this.id)' id='hiddenrow"+i+"'></i></pre><pre>   "+table[i][j]+"   </pre><pre><i class='fa fa-plus-circle fa-sm' aria-hidden='true' onclick='additem(this.id)' id='hiddenrow"+i+"'></i></pre></td>";
+				tablehtml += "<td><pre><i class='fal fa-minus fa-sm' aria-hidden='true' onclick='minusitem(this.id)' id='hiddenrow"+i+"'></i></pre><pre>   "+table[i][j]+"   </pre><pre><i class='fal fa-plus fa-sm' aria-hidden='true' onclick='additem(this.id)' id='hiddenrow"+i+"'></i></pre></td>";
 			else
 				tablehtml += "<td><pre>"+table[i][j]+"\t</pre></td>";
 		}
@@ -237,4 +242,27 @@ function initialDisp(){
 function generateNewPage(){
 	// eel.newPage();
 	window.open("index.html","_self");
+}
+
+function hamburger(){
+	var hamburger = document.getElementsByClassName("hamburgermenu");
+	for(i=0;i<hamburger.length;i++){
+		hamburger[i].classList.toggle("shown");
+		hamburger[i].classList.toggle("hideicon");
+	}
+	var hamburger = document.getElementsByClassName("hamburgerarrow");
+	for(i=0;i<hamburger.length;i++){
+		hamburger[i].classList.toggle("shown");
+		hamburger[i].classList.toggle("hideicon");
+	}
+	var mobile_nav = document.getElementsByClassName("mobile-nav-overlay");
+	for(i=0;i<mobile_nav.length;i++){
+		mobile_nav[i].classList.toggle("hide");
+		mobile_nav[i].classList.toggle("show");
+	}
+	var mobile_nav = document.getElementsByClassName("mobile-nav");
+	for(i=0;i<mobile_nav.length;i++){
+		mobile_nav[i].classList.toggle("hide");
+		mobile_nav[i].classList.toggle("show");
+	}
 }

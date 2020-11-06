@@ -13,7 +13,7 @@ input[name="menu"]{display:none}
   position: fixed;
   bottom: 0;
   width: 100%;
-  z-index: 10;
+  z-index: 5;
 }
 .list{
 	width: 100%;
@@ -81,6 +81,10 @@ input[name="menu"]{display:none}
 
 .purpleicon:hover{
   color: blueviolet;
+}
+
+.whiteicon{
+  color: white !important;
 }
 
 .voicebutton {
