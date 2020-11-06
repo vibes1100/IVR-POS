@@ -44,7 +44,7 @@ async function insertWishlist(){
     newLabel=document.createElement("label");
 	newLabel.setAttribute("for", newItem.id);
 	newLabel.setAttribute("class", "wishlistitem");
-	newLabel.innerHTML=await eel.myCommand("Wishlist Item?")();
+	newLabel.innerHTML=await eel.myCommand("Wishlist Item?")()
 	wishlistinsert=document.getElementById("wishlistinsert");
 	wishlistinsert.parentNode.insertBefore(newItem, wishlistinsert);
 	wishlistinsert.parentNode.insertBefore(newLabel, wishlistinsert);
@@ -58,6 +58,35 @@ async function generateproductReturns() {
 	// }
 	togglevoicedots();
 	eel.productReturns();
+	// var x = await 
+	// eel.myCommand()(dispTable);
+	// for(i=0;i<voicedots.length;i++){
+	// 	voicedots[i].classList.remove("active");
+	// }
+}
+async function generateBillingIssues() {
+	hideAll();
+	document.getElementById("assistant").classList.add("activesec");
+	// for(i=0;i<voicedots.length;i++){
+	// 	voicedots[i].classList.toggle("active");
+	// }
+	togglevoicedots();
+	eel.BillingIssues();
+	// var x = await 
+	// eel.myCommand()(dispTable);
+	// for(i=0;i<voicedots.length;i++){
+	// 	voicedots[i].classList.remove("active");
+	// }
+}
+
+async function generateSendFeedback() {
+	hideAll();
+	document.getElementById("assistant").classList.add("activesec");
+	// for(i=0;i<voicedots.length;i++){
+	// 	voicedots[i].classList.toggle("active");
+	// }
+	togglevoicedots();
+	eel.SendFeedback();
 	// var x = await 
 	// eel.myCommand()(dispTable);
 	// for(i=0;i<voicedots.length;i++){

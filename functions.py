@@ -18,17 +18,22 @@ gender = "Female"
 
 @eel.expose
 def gender_preference():
-    print("Which you like to change the voice to male ?")
-    eel.left_printer("Which you like to change the voice to male ?")
+    print("Which you like to alternate my voice ?")
+    eel.left_printer("Which you like to alternate my voice ?")
     inp0 = "yes"
     # inp0 = myCommand("Voice Change?")
     eel.right_printer(inp0.capitalize())
     global gender
 
     if inp0 == "yes" : 
-        gender = "Male"
-        eel.left_printer("I m now changed based on your preference !!")
-        speak("I m now changed based on your preference !!",genders=gender)
+        if gender == "Female":
+            gender = "Male"
+            eel.left_printer("I m now changed based on your preference !!")
+            speak("I m now changed based on your preference !!",genders=gender) 
+        else : 
+            gender == "Female"
+            eel.left_printer("I m now changed based on your preference !!")
+            speak("I m now changed based on your preference !!",genders=gender)
 
 def db_connect():
     conn = psycopg2.connect(database="IVR_POS", user="postgres", password="hi", host="127.0.0.1", port="5432")
@@ -98,7 +103,7 @@ def myCommand(param="Item name"):
         print('....')
         command = myCommand(param);
     
-    return command
+    return command.capitalize()
 
 def printer(current_pointer,p_type,quantity=0):
     
@@ -543,11 +548,11 @@ def billingIssues():
     speak("We are extremely sorry for the inconvenience")
     eel.left_printer("What is your invoice number?")
     speak("What is your invoice number?")
-    
-    eel.left_printer("Our sales team will get back to you as soon as possible")
-    speak("Our sales team will get back to you as soon as possible")
-
-    inp_user="I did not like your pasta sauce"
+    inp_user="62"
+    eel.right_printer(inp_user)
+    eel.left_printer("What is the issue you faced while billing?")
+    speak("What is the issue you faced while billing?")
+    inp_user="You have not included my discount"
     eel.right_printer(inp_user)
     query="SELECT row from customer_care order by row desc"
     cur.execute(query)
@@ -559,3 +564,30 @@ def billingIssues():
     conn.commit()
     eel.left_printer("Our sales team will get back to you as soon as possible ")
     speak("Our sales team will get back to you as soon as possible ")
+
+@eel.expose
+def SendFeedback():
+    inp_no = 'no'
+    inp_yes = 'yes'
+    conn,cur = db_connect()
+    eel.left_printer("We are extremely sorry for the inconvenience.")
+    speak("We are extremely sorry for the inconvenience")
+    eel.left_printer("What is your invoice number?")
+    speak("What is your invoice number?")
+    inp_user="63"
+    eel.right_printer(inp_user)
+    eel.left_printer("How can we improve your instore shopping experience?")
+    speak("How can we improve your instore shopping experience?")
+
+    inp_user="It would be convenient if you had sanitizing stations in the store."
+    eel.right_printer(inp_user)
+    query="SELECT row from customer_care order by row desc"
+    cur.execute(query)
+    rows = cur.fetchall()
+    new_entry = rows[0][0]+1
+    query = "INSERT INTO customer_care (cat_id,row,complain) \
+             VALUES (3,"+str(new_entry)+",'"+inp_user+"')"
+    cur.execute(query)
+    conn.commit()
+    eel.left_printer("Your feedback is valuable to us, we will try to work on this.")
+    speak("Your feedback is valuable to us, we will try to work on this.")
