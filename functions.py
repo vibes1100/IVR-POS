@@ -14,6 +14,21 @@ from    gtts        import gTTS
 from    nltk        import word_tokenize
 from    googletrans import Translator
 
+gender = "Female"
+
+@eel.expose
+def gender_preference():
+    print("Which you like to change the voice to male ?")
+    eel.left_printer("Which you like to change the voice to male ?")
+    inp0 = "yes"
+    # inp0 = myCommand("Voice Change?")
+    eel.right_printer(inp0.capitalize())
+    global gender
+
+    if inp0 == "yes" : 
+        gender = "Male"
+        eel.left_printer("I m now changed based on your preference !!")
+        speak("I m now changed based on your preference !!",genders=gender)
 
 def db_connect():
     conn = psycopg2.connect(database="IVR_POS", user="postgres", password="hi", host="127.0.0.1", port="5432")
@@ -31,29 +46,33 @@ def inv_printer():
     conn,cur = db_connect()
     return item_printer(cur)
 
-def speak(audio,language="english"):
+def speak(audio,language="english", genders = gender):
 
     translator = Translator()
     engine = pyttsx3.init() 
     voices = engine.getProperty('voices') 
-    if language=="english":
+    if gender == "Female" : 
+        engine.setProperty('voice', voices[1].id)
+    else : 
         engine.setProperty('voice', voices[0].id)
-    elif language =="hindi":
-        for voice in voices:
-            if voice.languages[0] == u'hi_IN':
-                engine.setProperty('voice', voice.id)
-                break
-        result = translator.translate(audio, src='en', dest='hi')
-        audio=result.text
+    # if language=="english":
+    #     engine.setProperty('voice', voices[0].id)
+    # elif language =="hindi":
+    #     for voice in voices:
+    #         if voice.languages[0] == u'hi_IN':
+    #             engine.setProperty('voice', voice.id)
+    #             break
+        # result = translator.translate(audio, src='en', dest='hi')
+        # audio=result.text
 
-    else:
-        for voice in voices:
-            if voice.languages[0] == u'es_ES':
-                engine.setProperty('voice', voice.id)
-                break
-        result = translator.translate(audio, src='en', dest='es')
-        audio=result.text
-        print(audio)    
+    # else:
+    #     for voice in voices:
+    #         if voice.languages[0] == u'es_ES':
+    #             engine.setProperty('voice', voice.id)
+    #             break
+        # result = translator.translate(audio, src='en', dest='es')
+        # audio=result.text
+        # print(audio)    
     
     engine.say(audio)
     engine.runAndWait()
@@ -201,11 +220,15 @@ def item_printer(cur_pointer):
     cur_pointer.execute(query)
     rows = cur_pointer.fetchall()
 
-    # for row in rows:
-    #     x.append(row[2])
+    return rows
     
-    # x = "<li>" + "<li>".join(x)
-    # return x
+def item_printer_eel(cur_pointer):
+    query = "SELECT * FROM items ORDER BY item_id"
+    x = []
+    #select invoice_id from invoice order by invoice_id desc limit 1
+    cur_pointer.execute(query)
+    rows = cur_pointer.fetchall()
+
     print('Item |\t\n id  |\t','Item name',"\t|")
     print("--------------------------")
     for row in rows : 
@@ -213,9 +236,8 @@ def item_printer(cur_pointer):
         x.append(row[2])
     x = "<li>" + "<li>".join(x)
 
-    #return x
-    return rows
-    
+    return x
+
 
 def stopword_remover(text):
     req = []
@@ -355,7 +377,7 @@ def known_item_voice(cur):
 def known_item(conn,cur,inp0='yes'):
     
     speak("Please check the screen to view all the items")
-    x = item_printer(cur)
+    x = item_printer_eel(cur)
     x = "Available items are : \n" + x
     eel.left_printer(x)
     
@@ -485,7 +507,6 @@ def complete_voice(cur,conn,inp0):
 @eel.expose
 def newPage():
     eel.start('index.html', size=(540, 960))
-
 
 @eel.expose
 def productReturns():

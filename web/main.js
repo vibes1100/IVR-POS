@@ -64,6 +64,22 @@ async function generateproductReturns() {
 	// 	voicedots[i].classList.remove("active");
 	// }
 }
+
+async function gender_preference_change() {
+	hideAll();
+	document.getElementById("assistant").classList.add("activesec");
+	// for(i=0;i<voicedots.length;i++){
+	// 	voicedots[i].classList.toggle("active");
+	// }
+	togglevoicedots();
+	eel.gender_preference();
+	// var x = await 
+	// eel.myCommand()(dispTable);
+	// for(i=0;i<voicedots.length;i++){
+	// 	voicedots[i].classList.remove("active");
+	// }
+}
+
 async function generateBillingIssues() {
 	hideAll();
 	document.getElementById("assistant").classList.add("activesec");
