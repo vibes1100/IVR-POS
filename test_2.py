@@ -30,11 +30,11 @@ try:
     #speak("Do u know exactly what u want to buy ?")
     #inp0 = myCommand("Do u know exactly what u want to buy ?")
 
-    speak("        Do u want a completely voice based system?")
+    # speak("        Do u want a completely voice based system?")
 
     inp0 = inp_no
     # myCommand("Do u want a completely voice based system?")
-    print(inp0)
+    # print(inp0)
 
     if inp0 == inp_yes:
 

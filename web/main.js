@@ -311,3 +311,18 @@ function hamburger(){
 		mobile_nav[i].classList.toggle("show");
 	}
 }
+
+function noguimode(){
+	var mobile_nav = document.getElementsByClassName("mobile-nav");
+	for(i=0;i<mobile_nav.length;i++){
+		mobile_nav[i].classList.toggle("hide");
+		mobile_nav[i].classList.toggle("show");
+	}
+	var mobile_nav = document.getElementsByClassName("mobile-nav-overlay");
+	for(i=0;i<mobile_nav.length;i++){
+		mobile_nav[i].classList.remove("hide");
+		mobile_nav[i].classList.remove("show");
+		mobile_nav[i].classList.add("nogui");
+	}
+	eel.fullVoice();
+}

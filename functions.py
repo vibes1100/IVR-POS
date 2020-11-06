@@ -57,6 +57,23 @@ def inv_printer():
     conn,cur = db_connect()
     return item_printer(cur)
 
+@eel.expose
+def fullVoice():
+    speak("        Initiating a completely voice based system")
+
+    inp0 = "Yes"
+    # myCommand("Do u want a completely voice based system?")
+    print(inp0)
+
+    if inp0 == "Yes":
+
+        speak("Do u know exactly what u want to buy ?")
+        inp0 = myCommand("Do u know exactly what u want to buy ?")
+        # inp0 = inp_no 
+        print(inp0)
+ 
+        complete_voice(cur,conn,inp0)
+
 def speak(audio,language="english", genders = gender):
 
     translator = Translator()
