@@ -18,27 +18,33 @@ gender = "Female"
 
 @eel.expose
 def gender_preference():
-    print("Which you like to alternate my voice ?")
-    eel.left_printer("Which you like to alternate my voice ?")
-    inp0 = "yes"
+    print("Would you like to switch assistants ?")
+    eel.left_printer("Would you like to switch assistant ?")
+    inp0 = "Yes"
     # inp0 = myCommand("Voice Change?")
     eel.right_printer(inp0.capitalize())
     global gender
 
-    if inp0 == "yes" : 
+    if inp0 == "Yes" : 
         if gender == "Female":
             gender = "Male"
-            eel.left_printer("I m now changed based on your preference !!")
-            speak("I m now changed based on your preference !!",genders=gender) 
+            eel.left_printer("I am now changed based on your preference")
+            speak("I am now changed based on your preference !!",genders=gender) 
         else : 
             gender == "Female"
-            eel.left_printer("I m now changed based on your preference !!")
-            speak("I m now changed based on your preference !!",genders=gender)
+            eel.left_printer("I have now changed my voice ")
+            speak("I have now changed my voice ",genders=gender)
 
 def db_connect():
     conn = psycopg2.connect(database="IVR_POS", user="postgres", password="hi", host="127.0.0.1", port="5432")
     cur = conn.cursor()
     return conn,cur
+
+conn,cur = db_connect()
+query = "SELECT nextval('invoice_seq')"
+cur.execute(query)
+rows = cur.fetchall()
+inv_id = rows[0][0]
 
 @eel.expose
 def basket_printer():
@@ -90,8 +96,9 @@ def myCommand(param="Item name"):
     
     with sr.Microphone() as source:
         print(param)
+        r.energy_threshold -= 200
         r.pause_threshold = 0.5
-        r.adjust_for_ambient_noise(source, duration=0.5)
+        r.adjust_for_ambient_noise(source, duration=0.1)
         audio = r.listen(source)
     
     try:
@@ -305,17 +312,14 @@ def stock_update(conn,cur,records_to_update):
     print(cur.rowcount, "Record updated successfully into stock")
 
 def invoice_generator(cur,user_buy,conn):
-    
-    query = "SELECT nextval('invoice_seq')"
-    cur.execute(query)
-    rows = cur.fetchall()
-    x = rows[0][0]
+    global inv_id
+
     records_to_update = []
     sql_update_query = """UPDATE stocks_table SET quantity = %s WHERE item_id = %s"""
 
     for i in range(len(user_buy)):
         joiner = str(user_buy[i][0][2]) + ", " + str(user_buy[i][0][3]) + ", " + str(user_buy[i][0][4])
-        record_to_insert = str(x) + ", " + str(user_buy[i][0][0]) + ", '" + user_buy[i][0][1] + "', " + joiner
+        record_to_insert = str(inv_id) + ", " + str(user_buy[i][0][0]) + ", '" + user_buy[i][0][1] + "', " + joiner
                     
         query = "INSERT INTO invoice (invoice_id, item_id, item_name, coster, quantity, overall) \
                 VALUES (" + record_to_insert + ")"
@@ -355,31 +359,44 @@ def bill_amount():
     cur.execute("SELECT SUM(overall) FROM invoice WHERE invoice_id = (SELECT invoice_id FROM invoice ORDER BY invoice_id DESC LIMIT 1)")
     return printer(cur,0)
 
+def str2int(string):
+    str2intdict = {"one":1, "two":2, "three":3, "four":4, "five":5, "six":6, "seven":7, "eight":8, "nine":9}
+    if string in str2intdict.keys():
+        return str2intdict[string]
+        
+    else : 
+        return -1
+
 def known_item_voice(cur):
-    inp1='yes'
+    inp1='Yes'
     user_buy = []
-    while(inp1 == 'yes'):
+    while(inp1 == 'Yes'):
         speak
-        # inp1 = 'britannia milk bread'
-        inp1 = myCommand("Item name")
+        inp1 = 'britannia milk bread'
+        # inp1 = myCommand("Item name")
         inp1 = word_tokenize(inp1)
         
         quantt = 6
-        #quantt = myCommand("Item quant")
-        if db_searcher(inp1, cur, quantt) != -1: 
-            user_buy.append(db_searcher(inp1,cur,quantt))
-            print(user_buy)
-            speak("Anything else ?")
-            inp1 = input("Enter yes/no")
-            #inp1 = myCommand("Yes/no")
+        # quantt = myCommand("Item quant")
+        if str2int(quantt) !=-1 : 
 
+
+            if db_searcher(inp1, cur, quantt) != -1: 
+                user_buy.append(db_searcher(inp1,cur,quantt))
+                print(user_buy)
+                speak("Anything else ?")
+                inp1 = input("Enter Yes/no")
+                #inp1 = myCommand("Yes/no")
+
+            else : 
+                known_item_voice(cur)
+                print("")
         else : 
-            known_item_voice(cur)
-            print("")
+            known_item_voice()
 
         return user_buy
 
-def known_item(conn,cur,inp0='yes'):
+def known_item(conn,cur,inp0='Yes'):
     
     speak("Please check the screen to view all the items")
     x = item_printer_eel(cur)
@@ -388,10 +405,10 @@ def known_item(conn,cur,inp0='yes'):
     
     user_buy = []
     
-    while(inp0=='yes'):
+    while(inp0=='Yes'):
             
-        inp1 = 'i want britannia milk bread'
-        #inp1 = myCommand("Item name")
+        # inp1 = 'i want britannia milk bread'
+        inp1 = myCommand("Item name")
         eel.right_printer(inp1.capitalize())
         inp1 = stopword_remover(inp1)
             
@@ -406,20 +423,24 @@ def known_item(conn,cur,inp0='yes'):
             
             speak("Would u like to add anything else ?")
             eel.left_printer("Would u like to add anything else ?")
-            #inp0 = myCommand("Anything else")
+            inp0 = myCommand("Anything else")
+            eel.right_printer(inp0)
             #inp0 = inp_no
-            inp0 = input()
+            # inp0 = input()
     
         else : 
             known_item(conn,cur)
 
         invoice_generator(cur,user_buy,conn)
+        speak("Ok, I have added your items into your cart")
+        eel.left_printer("Ok, I have added your items into your cart")
+        
 
-def unknown_item(conn,cur,inp0='yes'):
+def unknown_item(conn,cur,inp0='Yes'):
 
     user_buy = []
 
-    while(inp0=='yes'):
+    while(inp0 == 'Yes'):
 
         parent_category_selector(cur)
             
@@ -435,8 +456,8 @@ def unknown_item(conn,cur,inp0='yes'):
             item = item_selector(cur,inp2.capitalize())
             
             if item == 1 : 
-                inp3 = 'i want britannia milk bread'
-                #inp3 = myCommand("Item name")
+                # inp3 = 'i want britannia milk bread'
+                inp3 = myCommand("Item name")
                 eel.right_printer(inp3.capitalize())
                 inp3 = stopword_remover(inp3)
                 eel.left_printer("How much")
@@ -450,6 +471,10 @@ def unknown_item(conn,cur,inp0='yes'):
                     eel.left_printer("Would u like to add anything else ?")
                     inp0 = myCommand("Anything else")
                     eel.right_printer(inp0.capitalize())
+                    if inp0 == "Yes":
+                        continue
+                    else : 
+                        break
                     #inp0 = inp_no
                     # inp0 = input()
                 
@@ -466,7 +491,9 @@ def unknown_item(conn,cur,inp0='yes'):
             unknown_item(conn,cur)
 
     invoice_generator(cur,user_buy,conn)
+    speak("Ok, I have added your items into your cart")
     eel.left_printer("Ok, I have added your items into your cart")
+    
     return None
 
 def unknown_item_voice(cur,conn):
@@ -485,8 +512,8 @@ def unknown_item_voice(cur,conn):
 
 @eel.expose
 def tryblock():
-    inp_no = 'no'
-    inp_yes = 'yes'
+    inp_no = 'No'
+    inp_Yes = 'Yes'
     conn,cur = db_connect()
     eel.left_printer("Do you know exactly what you want to buy?")
     speak("Do u know exactly what u want to buy ?")
@@ -495,7 +522,7 @@ def tryblock():
 
     eel.right_printer(inp0.capitalize())
 
-    if inp0 == inp_yes:
+    if inp0 == inp_Yes:
         known_item(conn,cur)
         
     else : 
@@ -503,7 +530,7 @@ def tryblock():
 
 def complete_voice(cur,conn,inp0):
 
-    if inp0 == 'yes':
+    if inp0 == 'Yes':
         user_buy = known_item_voice(cur)
         invoice_generator(cur,user_buy,conn)
     else : 
@@ -516,7 +543,7 @@ def newPage():
 @eel.expose
 def productReturns():
     inp_no = 'no'
-    inp_yes = 'yes'
+    inp_Yes = 'Yes'
     conn,cur = db_connect()
     eel.left_printer("Thank you for contacting us about your defective product.")
     speak("Thank you for contacting us about your defective product")
@@ -542,7 +569,7 @@ def productReturns():
 @eel.expose
 def billingIssues():
     inp_no = 'no'
-    inp_yes = 'yes'
+    inp_Yes = 'Yes'
     conn,cur = db_connect()
     eel.left_printer("We are extremely sorry for the inconvenience.")
     speak("We are extremely sorry for the inconvenience")
@@ -568,7 +595,7 @@ def billingIssues():
 @eel.expose
 def SendFeedback():
     inp_no = 'no'
-    inp_yes = 'yes'
+    inp_Yes = 'Yes'
     conn,cur = db_connect()
     eel.left_printer("We are extremely sorry for the inconvenience.")
     speak("We are extremely sorry for the inconvenience")
